@@ -670,10 +670,12 @@ body{
 
       <input type="text" id="inp" class="typing-input"
         placeholder="打字衝線… Type to race…"
+        inputmode="text" enterkeyhint="enter"
+        aria-label="打字輸入框 Typing input"
         autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
       <div class="hint" id="hint">打出上面的文字 ⬆️</div>
 
-      <div class="feedback"><div class="fb-msg" id="fb"></div></div>
+      <div class="feedback" aria-live="polite"><div class="fb-msg" id="fb"></div></div>
 
       <div class="ctrl-row">
         <button class="btn btn-yellow btn-sm" onclick="skipWord()">⏭ 跳過</button>
@@ -1350,6 +1352,20 @@ function toggleSound(){
   if(S.soundOn) SFX.ok();
 }
 
+/* ═══════ GAME CONFIG ═══════ */
+const CFG={
+  COMBO_THRESHOLD:3,    // 連擊顯示門檻
+  COMBO_MEGA:10,        // 連擊大爆發門檻
+  GOLD_MULT_BASE:5,     // 金磚基礎倍率
+  GOLD_WORD_RATE:.6,    // 關卡產生金磚機率
+  BOSS_COIN_MULT:1.5,   // BOSS 關卡金幣加成
+  BOSS_LEVEL_EVERY:5,   // 每幾關出現 BOSS
+  BOSS_WORD_CAP:10,     // BOSS 關卡題數上限
+  POWERUP_DROP_RATE:.5, // 過關獎勵道具機率
+  COMBO_BONUS_STEP:3,   // 每幾連擊額外金幣
+  COMBO_BONUS_AMT:2,    // 額外金幣
+};
+
 /* ═══════ GAME STATE ═══════ */
 let G={};
 function resetG(mode){
@@ -1358,7 +1374,8 @@ function resetG(mode){
      correctWords:0,errors:0,bricksFilled:0,composing:false,
      combo:0,goldIdx:-1,shieldActive:false,doubleActive:false,
      levelPerfect:true,lvlCoins:0,isBoss:false,
-     comboProtectsLeft:0,autoShieldReady:false,sessionCorrect:0};
+     comboProtectsLeft:0,autoShieldReady:false,sessionCorrect:0,
+     allGold:false,timer:null};
 }
 
 /* ═══════ NAV ═══════ */
@@ -1449,17 +1466,18 @@ function renderTrophies(){
 function levels(){return BANKS[G.mode]}
 
 function loadLevel(){
+  clearInterval(G.timer); G.timer=null;
   const totalLvl=G.lvlIdx+1+(G.cycle-1)*levels().length;
-  G.isBoss=(totalLvl%5===0);
+  G.isBoss=(totalLvl%CFG.BOSS_LEVEL_EVERY===0);
   const lvl=levels()[G.lvlIdx];
   let pool=[...lvl.words];
   if(G.isBoss) pool=pool.concat(pool);
-  G.words=shuffle(pool).slice(0,G.isBoss?Math.min(10,pool.length):lvl.words.length);
+  G.words=shuffle(pool).slice(0,G.isBoss?Math.min(CFG.BOSS_WORD_CAP,pool.length):lvl.words.length);
   G.wIdx=0; G.correctWords=0; G.errors=0; G.bricksFilled=0;
   G.sessionStart=Date.now(); G.combo=0;
   G.levelPerfect=true; G.lvlCoins=0;
   G.comboProtectsLeft=0; G.autoShieldReady=false;
-  G.goldIdx=Math.random()<.6?Math.floor(Math.random()*G.words.length):-1;
+  G.goldIdx=Math.random()<CFG.GOLD_WORD_RATE?Math.floor(Math.random()*G.words.length):-1;
   applyStartAbility();
   const a=currentAbility();
   if(a.name) setTimeout(()=>toast('🎯 '+a.name+'：'+a.desc),450);
@@ -1476,7 +1494,6 @@ function loadLevel(){
   document.getElementById('wpm').textContent='0';
   document.getElementById('acc').textContent='100';
   document.getElementById('sec').textContent='0';
-  clearInterval(G.timer);
   G.timer=setInterval(tickTimer,1000);
 
   loadWord();
@@ -1561,9 +1578,9 @@ function handleOK(){
   fillBrick(G.wIdx,isGold);
 
   const abl=currentAbility();
-  let coins=chars+Math.floor(G.combo/3)*2;
+  let coins=chars+Math.floor(G.combo/CFG.COMBO_BONUS_STEP)*CFG.COMBO_BONUS_AMT;
   if(isGold){
-    const mult=5*(abl.goldMult||1);
+    const mult=CFG.GOLD_MULT_BASE*(abl.goldMult||1);
     coins*=mult; S.goldBricks++; SFX.gold();
     if(abl.goldMult>1) toast('🎬 '+abl.name+' 觸發！金磚 x'+mult);
   } else SFX.ok();
@@ -1578,7 +1595,7 @@ function handleOK(){
     toast('🏆 七冠王啟動！+'+abl.every7Bonus+' 金幣');
   }
   if(G.doubleActive){coins*=2; G.doubleActive=false}
-  if(G.isBoss) coins=Math.floor(coins*1.5);
+  if(G.isBoss) coins=Math.floor(coins*CFG.BOSS_COIN_MULT);
   addCoins(coins); G.lvlCoins+=coins;
 
   animateFig(G.combo>=5?'fig-jump':'fig-happy');
@@ -1648,10 +1665,10 @@ function fillBrick(i,gold){
 function updateCombo(n){
   const disp=document.getElementById('combo-disp');
   document.getElementById('combo-n').textContent=n;
-  const thr=currentAbility().comboThreshold||3;
+  const thr=currentAbility().comboThreshold||CFG.COMBO_THRESHOLD;
   if(n>=thr){
     disp.classList.add('show');
-    disp.classList.toggle('mega',n>=10);
+    disp.classList.toggle('mega',n>=CFG.COMBO_MEGA);
     if(n>=5 && n%5===0) SFX.combo();
   } else {
     disp.classList.remove('show','mega');
@@ -1765,7 +1782,7 @@ function levelDone(){
 }
 
 function rewardPowerup(place){
-  if(Math.random()>.5) return null;
+  if(Math.random()>CFG.POWERUP_DROP_RATE) return null;
   const pool=place===1?['shield','double','skip']:['shield','double'];
   const p=pool[Math.floor(Math.random()*pool.length)];
   S.powerups[p]=(S.powerups[p]||0)+1;
@@ -1981,7 +1998,13 @@ function spawnConfetti(){
 function clearConfetti(){document.getElementById('confetti').innerHTML=''}
 
 /* ═══════ UTILS ═══════ */
-function shuffle(a){return a.sort(()=>Math.random()-.5)}
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
 function rnd(a){return a[Math.floor(Math.random()*a.length)]}
 
 /* ═══════ GM (Developer) MODE ═══════ */
