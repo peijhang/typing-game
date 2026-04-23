@@ -1378,6 +1378,8 @@ const CFG={
   BOSS_LEVEL_EVERY:5,   // 每幾關出現 BOSS
   BOSS_WORD_CAP:10,     // BOSS 關卡題數上限
   POWERUP_DROP_RATE:.5, // 過關獎勵道具機率
+  IN_RACE_DROP_RATE:.08,// 賽中每題掉落道具機率
+  COMBO_DROP_BONUS:.02, // 每 5 連擊額外掉落加成
   COMBO_BONUS_STEP:3,   // 每幾連擊額外金幣
   COMBO_BONUS_AMT:2,    // 額外金幣
 };
@@ -1629,6 +1631,7 @@ function handleOK(){
   spawnSprintBurst(isGold);
   spawnParticles(isGold?'🏁':'💨',isGold?14:6);
   floatBubble('+'+coins+'🏁');
+  maybeDropPowerup(isGold);
   updateStats();
   checkAchievements();
 
@@ -1719,6 +1722,27 @@ function updateStats(){
 }
 
 /* ═══════ POWERUPS ═══════ */
+const PU_META={
+  shield:{emoji:'⚠️',label:'黃旗安全車'},
+  double:{emoji:'🏁',label:'DRS 加速'},
+  skip:  {emoji:'🚁',label:'進站 Pit Stop'},
+};
+function maybeDropPowerup(isGold){
+  let rate=CFG.IN_RACE_DROP_RATE;
+  if(G.combo>=5) rate+=CFG.COMBO_DROP_BONUS*Math.floor(G.combo/5);
+  if(!isGold && Math.random()>=rate) return;
+  // 金磚保證掉落
+  const pool=isGold?['shield','double','skip']:['shield','double'];
+  const p=pool[Math.floor(Math.random()*pool.length)];
+  S.powerups[p]=(S.powerups[p]||0)+1;
+  const meta=PU_META[p];
+  SFX.powerup();
+  floatBubble(meta.emoji+' +1');
+  // 延遲 toast 避免蓋掉 handleOK 其他提示
+  setTimeout(()=>toast('🎁 拾獲道具：'+meta.emoji+' '+meta.label),600);
+  renderPowerups();
+  save();
+}
 function renderPowerups(){
   ['shield','double','skip'].forEach(k=>{
     document.getElementById('cnt-'+k).textContent=S.powerups[k]||0;
