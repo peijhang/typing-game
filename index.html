@@ -147,6 +147,13 @@ body{
   background:#5D4037;border-radius:0 0 8px 8px;border:3px solid var(--black);border-top:none}
 .trophy{font-size:1.4rem;transition:transform .3s;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
 .trophy:hover{transform:translateY(-3px) scale(1.1)}
+.trophy.crown{font-size:2.6rem;margin-right:6px;
+  filter:drop-shadow(0 0 10px #FFD700) drop-shadow(0 2px 3px rgba(0,0,0,.4));
+  animation:crownGlow 2.4s ease-in-out infinite}
+@keyframes crownGlow{
+  0%,100%{transform:translateY(0) rotate(-3deg);filter:drop-shadow(0 0 8px #FFD700) drop-shadow(0 2px 3px rgba(0,0,0,.4))}
+  50%{transform:translateY(-4px) rotate(3deg);filter:drop-shadow(0 0 18px #FFC107) drop-shadow(0 2px 3px rgba(0,0,0,.4))}
+}
 
 /* ── START LIGHTS (game start animation) ── */
 .start-lights{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
@@ -805,31 +812,31 @@ const HELMETS=[
   {id:'noob',name:'新手頭盔',price:0,
     svg:{variant:'helmet',colors:['#1976D2','#FFF','#FFD700'],num:'2'},
     ability:{name:'🪖 新手上路',desc:'標準配備。'}},
-  {id:'hamhelm',name:'Hamilton 頭盔',price:180,team:'#FFD700',teamText:'#E30613',label:'🟡 HAMILTON #44',
+  {id:'hamhelm',name:'Hamilton 頭盔',price:600,team:'#FFD700',teamText:'#E30613',label:'🟡 HAMILTON #44',
     svg:{variant:'helmet',colors:['#FFD700','#E30613','#6A1B9A'],num:'44'},
     ability:{name:'🏆 七冠王',desc:'每打對 7 個詞 +7 金幣。',every7Bonus:7}},
-  {id:'lechelm',name:'Leclerc 頭盔',price:180,team:'#E30613',teamText:'#FFF',label:'🔴 LECLERC #16',
+  {id:'lechelm',name:'Leclerc 頭盔',price:600,team:'#E30613',teamText:'#FFF',label:'🔴 LECLERC #16',
     svg:{variant:'helmet',colors:['#E30613','#FFF','#FFD700'],num:'16'},
     ability:{name:'⭐ 法拉利新星',desc:'關卡每顆星 +15 金幣。',starBonus:15}},
-  {id:'maxhelm',name:'Verstappen 頭盔',price:220,team:'#1E41FF',teamText:'#FFED00',label:'🐂 VERSTAPPEN #1',
+  {id:'maxhelm',name:'Verstappen 頭盔',price:850,team:'#1E41FF',teamText:'#FFED00',label:'🐂 VERSTAPPEN #1',
     svg:{variant:'helmet',colors:['#1E41FF','#FFED00','#DC0000'],num:'1'},
     ability:{name:'🐂 連霸戰神',desc:'連擊門檻降到 2。',comboThreshold:2}},
-  {id:'norrishelm',name:'Norris 頭盔',price:180,team:'#FF8000',teamText:'#000',label:'🟠 NORRIS #4',
+  {id:'norrishelm',name:'Norris 頭盔',price:700,team:'#FF8000',teamText:'#000',label:'🟠 NORRIS #4',
     svg:{variant:'helmet',colors:['#FF8000','#000','#00A2FF'],num:'4'},
     ability:{name:'🟠 Papaya 能量',desc:'完美關卡 +80 金幣。',perfectBonus:80}},
-  {id:'russellhelm',name:'Russell 頭盔',price:180,team:'#00D2BE',teamText:'#000',label:'⚫ RUSSELL #63',
+  {id:'russellhelm',name:'Russell 頭盔',price:650,team:'#00D2BE',teamText:'#000',label:'⚫ RUSSELL #63',
     svg:{variant:'helmet',colors:['#00D2BE','#000','#C0C0C0'],num:'63'},
     ability:{name:'💨 Silver Stream',desc:'每題金幣 +12%。',coinBoost:0.12}},
-  {id:'piastrihelm',name:'Piastri 頭盔',price:200,team:'#FF6F00',teamText:'#000',label:'🇦🇺 PIASTRI #81',
+  {id:'piastrihelm',name:'Piastri 頭盔',price:750,team:'#FF6F00',teamText:'#000',label:'🇦🇺 PIASTRI #81',
     svg:{variant:'helmet',colors:['#FF6F00','#000','#00A2FF'],num:'81'},
     ability:{name:'🦘 袋鼠衝刺',desc:'開場連擊 +2。',startCombo:2}},
-  {id:'alonsohelm',name:'Alonso 頭盔',price:200,team:'#006F62',teamText:'#FFD700',label:'🟢 ALONSO #14',
+  {id:'alonsohelm',name:'Alonso 頭盔',price:800,team:'#006F62',teamText:'#FFD700',label:'🟢 ALONSO #14',
     svg:{variant:'helmet',colors:['#006F62','#FFD700','#DC0000'],num:'14'},
     ability:{name:'🧓 老將智慧',desc:'BOSS 關金幣 x1.5。',bossMult:1.5}},
-  {id:'sennahelm',name:'Senna 傳奇頭盔',price:350,team:'#FFD500',teamText:'#006F00',label:'🏆 AYRTON SENNA',
+  {id:'sennahelm',name:'Senna 傳奇頭盔',price:1800,team:'#FFD500',teamText:'#006F00',label:'🏆 AYRTON SENNA',
     svg:{variant:'helmet',colors:['#FFD500','#006F00','#DC0000'],num:'1'},
     ability:{name:'✨ Magic at Monaco',desc:'完美關卡 +150 金幣。',perfectBonus:150}},
-  {id:'schumihelm',name:'Schumacher 頭盔',price:320,team:'#E30613',teamText:'#FFF',label:'🏆 MICHAEL SCHUMACHER',
+  {id:'schumihelm',name:'Schumacher 頭盔',price:1600,team:'#E30613',teamText:'#FFF',label:'🏆 MICHAEL SCHUMACHER',
     svg:{variant:'helmet',colors:['#E30613','#FFF','#000'],num:'1'},
     ability:{name:'🏆 車王本色',desc:'每題金幣 +15% + 5% 幸運 +5。',coinBoost:0.15,luckyCoin:0.05,luckyCoinAmt:5}},
 ];
@@ -838,66 +845,71 @@ const CARS=[
   {id:'practice',name:'練習車',price:0,
     svg:{colors:['#424242','#FFF','#FFC107'],num:'99'},
     ability:{name:'🏎️ 標準車',desc:'無特殊效果。'}},
-  {id:'ferrari',name:'Ferrari SF-24',price:150,team:'#DC0000',teamText:'#FFF',label:'🇮🇹 SCUDERIA FERRARI',
+  {id:'ferrari',name:'Ferrari SF-24',price:550,team:'#DC0000',teamText:'#FFF',label:'🇮🇹 SCUDERIA FERRARI',
     svg:{colors:['#DC0000','#FFD700','#000'],num:'16',pattern:'ferrari'},
     ability:{name:'🇮🇹 Tifosi 熱情',desc:'每題金幣 +20%。',coinBoost:0.20}},
-  {id:'mclaren',name:'McLaren MCL38',price:150,team:'#FF8000',teamText:'#000',label:'🟠 McLAREN F1',
+  {id:'mclaren',name:'McLaren MCL38',price:550,team:'#FF8000',teamText:'#000',label:'🟠 McLAREN F1',
     svg:{colors:['#FF8000','#000','#00A2FF'],num:'4',pattern:'mclaren'},
     ability:{name:'🟠 Papaya Combo',desc:'連擊門檻降到 2。',comboThreshold:2}},
-  {id:'redbull',name:'Red Bull RB20',price:180,team:'#1E41FF',teamText:'#FFED00',label:'🐂 ORACLE RED BULL',
+  {id:'redbull',name:'Red Bull RB20',price:700,team:'#1E41FF',teamText:'#FFED00',label:'🐂 ORACLE RED BULL',
     svg:{colors:['#0A2E6E','#FED703','#DC0000'],num:'1',pattern:'redbull'},
     ability:{name:'🏁 DRS 開啟',desc:'每關開場 +1 💎。',startDouble:1}},
-  {id:'mercedes',name:'Mercedes W15',price:180,team:'#00D2BE',teamText:'#000',label:'⭐ AMG PETRONAS',
+  {id:'mercedes',name:'Mercedes W15',price:700,team:'#00D2BE',teamText:'#000',label:'⭐ AMG PETRONAS',
     svg:{colors:['#000','#00D2BE','#C0C0C0'],num:'63',pattern:'mercedes'},
     ability:{name:'⭐ Silver Arrow',desc:'完美關卡 +60 金幣。',perfectBonus:60}},
-  {id:'bmw',name:'BMW M4 GT3',price:160,team:'#0066B1',teamText:'#FFF',label:'🔵 BMW M MOTORSPORT',
+  {id:'bmw',name:'BMW M4 GT3',price:600,team:'#0066B1',teamText:'#FFF',label:'🔵 BMW M MOTORSPORT',
     svg:{colors:['#FFF','#0066B1','#DC0000'],num:'1',pattern:'bmw'},
     ability:{name:'🔵 M Power',desc:'每題 15% 機率 +4 金幣。',luckyCoin:0.15,luckyCoinAmt:4}},
-  {id:'apxgp',name:'APXGP F1',price:220,team:'#000',teamText:'#FFD700',label:'⚡ F1 THE MOVIE',
+  {id:'apxgp',name:'APXGP F1',price:1400,team:'#000',teamText:'#FFD700',label:'⚡ F1 THE MOVIE',
     svg:{colors:['#000','#FFD700','#FFD700'],num:'44',pattern:'apxgp'},
     ability:{name:'🎬 Hollywood Magic',desc:'金磚倍率 x2（5x→10x）。',goldMult:2}},
-  {id:'delorean',name:'DeLorean 時光車',price:200,team:'#C0C0C0',teamText:'#000',label:'⏰ BACK TO THE FUTURE',
+  {id:'delorean',name:'DeLorean 時光車',price:900,team:'#C0C0C0',teamText:'#000',label:'⏰ BACK TO THE FUTURE',
     svg:{variant:'delorean',colors:['#C0C0C0','#333','#00E5FF']},
     ability:{name:'⏰ 時光倒流',desc:'每關首次失誤自動護盾。',autoShield:true}},
-  {id:'f2004',name:'Ferrari F2004',price:280,team:'#E30613',teamText:'#FFF',label:'🏆 SCHUMACHER 2004',
+  {id:'f2004',name:'Ferrari F2004',price:1700,team:'#E30613',teamText:'#FFF',label:'🏆 SCHUMACHER 2004',
     svg:{variant:'classic',colors:['#DC0000','#FFF','#FFF'],num:'1'},
     ability:{name:'🏆 車王傳奇',desc:'BOSS 關金幣 x2。',bossMult:2}},
-  {id:'mp44',name:'McLaren MP4/4',price:280,team:'#FFF',teamText:'#E30613',label:'🏆 SENNA 1988',
+  {id:'mp44',name:'McLaren MP4/4',price:1500,team:'#FFF',teamText:'#E30613',label:'🏆 SENNA 1988',
     svg:{variant:'classic',colors:['#FFF','#DC0000','#DC0000'],num:'12'},
     ability:{name:'✨ Senna Magic',desc:'完美關卡 +100 金幣。',perfectBonus:100}},
-  {id:'fw14b',name:'Williams FW14B',price:260,team:'#003399',teamText:'#FFD500',label:'🏆 MANSELL 1992',
+  {id:'fw14b',name:'Williams FW14B',price:1300,team:'#003399',teamText:'#FFD500',label:'🏆 MANSELL 1992',
     svg:{variant:'classic',colors:['#003399','#FFD500','#FFF'],num:'5'},
     ability:{name:'🔧 主動懸吊',desc:'連擊不因單次失誤歸零（每關 1 次）。',comboProtect:1}},
+  {id:'goldenf1',name:'黃金 F1 王者',price:9999,team:'#FFD700',teamText:'#000',label:'👑 GOLDEN CHAMPION',
+    svg:{variant:'classic',colors:['#FFD700','#FFF8DC','#B8860B'],num:'∞'},
+    unlockAll:true,
+    ability:{name:'👑 王者降臨',desc:'每題金幣 +50%、金磚 x3、完美 +250、BOSS x2、自動護盾。購買後立即解鎖所有品項並獲得皇冠獎盃。',
+      coinBoost:0.50,goldMult:3,perfectBonus:250,bossMult:2,autoShield:true}},
 ];
 
 const GEAR=[
   {id:'none',name:'無裝備',price:0,emoji:'➖',
     ability:{name:'🛠️ 空欄位',desc:'沒有額外加成。'}},
-  {id:'soft-tire',name:'軟胎 Soft Tyre',price:80,emoji:'🔴',
+  {id:'soft-tire',name:'軟胎 Soft Tyre',price:300,emoji:'🔴',
     ability:{name:'🔴 黏地軟胎',desc:'每題金幣 +10%。',coinBoost:0.10}},
-  {id:'hard-tire',name:'硬胎 Hard Tyre',price:80,emoji:'⚫',
+  {id:'hard-tire',name:'硬胎 Hard Tyre',price:300,emoji:'⚫',
     ability:{name:'⚫ 耐磨硬胎',desc:'每關開場 +1 🛡️ 護盾。',startShield:1}},
-  {id:'drs-wing',name:'DRS 尾翼',price:120,emoji:'🪽',
+  {id:'drs-wing',name:'DRS 尾翼',price:450,emoji:'🪽',
     ability:{name:'🪽 可變尾翼',desc:'連擊門檻降到 2。',comboThreshold:2}},
-  {id:'nitro',name:'Nitro 氮氣罐',price:140,emoji:'💨',
+  {id:'nitro',name:'Nitro 氮氣罐',price:500,emoji:'💨',
     ability:{name:'💨 瞬間加速',desc:'開場連擊 +3。',startCombo:3}},
-  {id:'fuel-can',name:'燃料罐 Fuel',price:100,emoji:'⛽',
+  {id:'fuel-can',name:'燃料罐 Fuel',price:380,emoji:'⛽',
     ability:{name:'⛽ 滿油出發',desc:'每關開場 +1 💎 雙倍。',startDouble:1}},
-  {id:'halo',name:'Halo 座艙罩',price:160,emoji:'⭕',
+  {id:'halo',name:'Halo 座艙罩',price:600,emoji:'⭕',
     ability:{name:'⭕ Halo 保護',desc:'每關首次失誤自動擋下。',autoShield:true}},
-  {id:'data',name:'數據工程師',price:140,emoji:'📊',
+  {id:'data',name:'數據工程師',price:500,emoji:'📊',
     ability:{name:'📊 賽道數據',desc:'每題 15% 機率 +5 金幣。',luckyCoin:0.15,luckyCoinAmt:5}},
-  {id:'radio',name:'車隊無線電',price:120,emoji:'📻',
+  {id:'radio',name:'車隊無線電',price:450,emoji:'📻',
     ability:{name:'📻 即時指令',desc:'連擊不因單次失誤歸零（每關 1 次）。',comboProtect:1}},
-  {id:'stopwatch',name:'圈速計時器',price:150,emoji:'⏱️',
+  {id:'stopwatch',name:'圈速計時器',price:550,emoji:'⏱️',
     ability:{name:'⏱️ 極速圈速',desc:'完美關卡 +50 金幣。',perfectBonus:50}},
-  {id:'turbo',name:'Turbo 渦輪',price:200,emoji:'🌀',
+  {id:'turbo',name:'Turbo 渦輪',price:750,emoji:'🌀',
     ability:{name:'🌀 Turbo Boost',desc:'每題金幣 +15%。',coinBoost:0.15}},
-  {id:'champagne',name:'香檳噴瓶',price:180,emoji:'🍾',
+  {id:'champagne',name:'香檳噴瓶',price:680,emoji:'🍾',
     ability:{name:'🍾 頒獎慶祝',desc:'每顆星 +10 金幣。',starBonus:10}},
-  {id:'trophy-stand',name:'冠軍獎盃',price:250,emoji:'🏆',
+  {id:'trophy-stand',name:'冠軍獎盃',price:950,emoji:'🏆',
     ability:{name:'🏆 冠軍之證',desc:'完美 +60 + 每顆星 +8。',perfectBonus:60,starBonus:8}},
-  {id:'pit-crew',name:'Pit Crew 團隊',price:160,emoji:'🧑‍🔧',
+  {id:'pit-crew',name:'Pit Crew 團隊',price:600,emoji:'🧑‍🔧',
     ability:{name:'🔧 進站神隊友',desc:'每關開場 +1 🛡️ +1 ⏭️。',startShield:1,startSkip:1}},
 ];
 
@@ -1266,9 +1278,12 @@ const ACHS=[
   {id:'cycle2',icon:'🔄',title:'第二賽季',desc:'進入第二賽季',reward:50,test:s=>s.maxCycle>=2},
   {id:'perfect',icon:'💯',title:'完美圈速',desc:'一場 GP 100% 正確',reward:40,test:s=>s.perfectLvls>=1},
   {id:'gold',icon:'🏅',title:'金磚獵人',desc:'蒐集 3 塊金色路段',reward:60,test:s=>s.goldBricks>=3},
-  {id:'rich',icon:'💰',title:'獎金獵人',desc:'累計 300 積分',reward:100,test:s=>s.totalEarned>=300},
+  {id:'rich',icon:'💰',title:'獎金獵人',desc:'累計 2,000 積分',reward:200,test:s=>s.totalEarned>=2000},
+  {id:'tycoon',icon:'💎',title:'賽車大亨',desc:'累計 10,000 積分',reward:500,test:s=>s.totalEarned>=10000},
   {id:'words50',icon:'📝',title:'打字王牌',desc:'累計打對 50 個詞',reward:30,test:s=>s.totalCorrectWords>=50},
+  {id:'words500',icon:'⌨️',title:'鍵盤大師',desc:'累計打對 500 個詞',reward:300,test:s=>s.totalCorrectWords>=500},
   {id:'boss',icon:'👑',title:'冠軍賽王者',desc:'通過第一場 Final',reward:80,test:s=>s.bossDone>=1},
+  {id:'crown',icon:'👑',title:'皇冠收藏家',desc:'解鎖全部車庫品項',reward:1000,test:s=>s.crownEarned===true},
 ];
 
 /* ═══════ SAVE (localStorage) ═══════ */
@@ -1283,6 +1298,7 @@ let S={
   totalCorrectWords:0, perfectLvls:0,
   goldBricks:0, bossDone:0,
   soundOn:true,
+  crownEarned:false,
 };
 function loadSave(){
   try{
@@ -1449,7 +1465,14 @@ function renderTrophies(){
   const n=Math.min(S.lvlsDone,30);
   const items=['🏆','🥇','🥈','🥉','🏅','🎖️'];
   shelf.innerHTML='';
-  if(n===0){
+  if(S.crownEarned){
+    const c=document.createElement('span');
+    c.className='trophy crown';
+    c.textContent='👑';
+    c.title='皇冠獎盃 — 全品項收藏完成';
+    shelf.appendChild(c);
+  }
+  if(n===0 && !S.crownEarned){
     shelf.innerHTML='<div style="width:100%;text-align:center;color:#3E2723;font-size:.85rem;padding:20px 0">還沒拿過獎盃 — 開始比賽吧！</div>';
     return;
   }
@@ -1860,8 +1883,40 @@ function buyOrSelect(f){
   S.equip[cat]=f.id;
   SFX.bonus();
   toast('🎉 入手 '+f.name+'！');
+  if(f.unlockAll) unlockAllItems(f.name);
+  checkCrownTrophy();
   document.getElementById('coin-count').textContent=S.coins;
   save(); renderShop(); renderHome();
+}
+
+function unlockAllItems(triggerName){
+  let added=0;
+  [['helmet',HELMETS],['car',CARS],['gear',GEAR]].forEach(([k,pool])=>{
+    pool.forEach(it=>{
+      if(!S.unlocked[k].includes(it.id)){ S.unlocked[k].push(it.id); added++; }
+    });
+  });
+  if(added>0){
+    spawnConfetti();
+    setTimeout(()=>toast('🌟 '+triggerName+' 解鎖了 '+added+' 個品項！'),900);
+  }
+}
+
+function checkCrownTrophy(){
+  if(S.crownEarned) return;
+  const allOwned=
+    HELMETS.every(h=>S.unlocked.helmet.includes(h.id)) &&
+    CARS.every(c=>S.unlocked.car.includes(c.id)) &&
+    GEAR.every(g=>S.unlocked.gear.includes(g.id));
+  if(allOwned){
+    S.crownEarned=true;
+    SFX.gold();
+    setTimeout(()=>toast('👑 皇冠獎盃解鎖！收藏全品項的傳奇車手'),1800);
+    spawnConfetti();
+    save();
+    renderHome();
+    checkAchievements();
+  }
 }
 
 /* ═══════ ACHIEVEMENTS ═══════ */
@@ -2164,6 +2219,7 @@ function populateRoadCars(){
 /* ═══════ INIT ═══════ */
 loadSave();
 if(S.gm) document.getElementById('gm-badge').classList.add('show');
+checkCrownTrophy();
 renderHome();
 populateRoadCars();
 checkAchievements();
