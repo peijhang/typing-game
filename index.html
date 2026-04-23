@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏁 速度冠軍 打字賽道 | Speed Typing Circuit</title>
+<style>
+:root{
+  --red:#DC0000;       /* Ferrari red */
+  --darkred:#8B0000;
+  --black:#1A1A1A;
+  --silver:#C0C0C0;
+  --white:#FFFFFF;
+  --yellow:#FFD700;
+  --orange:#F57C00;
+  --green:#00A650;
+  --blue:#006CB7;
+  --purple:#9C27B0;
+  --gray:#616161;
+  --asphalt:#37474F;
+  --grass:#2E7D32;
+  --pitlane:#FFD700;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI','Noto Sans TC',Arial,sans-serif;
+  background:linear-gradient(180deg,#0D1B2A 0%,#1B263B 35%,#415A77 65%,var(--grass) 100%);
+  min-height:100vh;overflow-x:hidden;position:relative;color:#fff;
+}
+
+/* ── GRANDSTAND + SPEED LINES ── */
+.grandstand{position:fixed;top:0;left:0;right:0;height:100px;z-index:1;pointer-events:none;
+  background:
+    repeating-linear-gradient(90deg,transparent 0,transparent 8px,rgba(255,255,255,.03) 8px,rgba(255,255,255,.03) 10px),
+    linear-gradient(180deg,#0D1B2A 0%,transparent 100%);opacity:.6}
+.speedlines{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.14;
+  background:repeating-linear-gradient(45deg,transparent 0,transparent 30px,rgba(255,255,255,.3) 30px,rgba(255,255,255,.3) 32px)}
+
+/* ── CHECKERED STRIP ── */
+.checker{
+  height:16px;
+  background-image:
+    linear-gradient(45deg,#000 25%,transparent 25%,transparent 75%,#000 75%,#000),
+    linear-gradient(45deg,#000 25%,#fff 25%,#fff 75%,#000 75%,#000);
+  background-size:16px 16px;background-position:0 0,8px 8px;background-color:#fff;
+}
+
+/* ── 3D LEGO STUD BUTTONS ── */
+.btn{display:inline-block;padding:12px 22px;border:3px solid rgba(0,0,0,.4);
+  border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;
+  transition:transform .1s,box-shadow .1s,filter .1s;letter-spacing:.5px;user-select:none;
+  position:relative;font-family:inherit;color:#fff;
+  text-shadow:0 -1px 0 rgba(0,0,0,.3);overflow:visible}
+/* Top LEGO stud */
+.btn::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  width:22px;height:10px;border-radius:6px 6px 0 0;background:inherit;
+  border:3px solid rgba(0,0,0,.4);border-bottom:none;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.5)}
+/* Glossy top half highlight */
+.btn::after{content:'';position:absolute;inset:2px 2px auto 2px;height:45%;
+  background:linear-gradient(180deg,rgba(255,255,255,.35) 0%,rgba(255,255,255,0) 100%);
+  border-radius:5px 5px 0 0;pointer-events:none}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:translateY(4px)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-red{background:linear-gradient(180deg,#E8344C,var(--red) 40%,#A30000);box-shadow:0 5px 0 var(--darkred),0 7px 10px rgba(0,0,0,.3)}
+.btn-blue{background:linear-gradient(180deg,#2B8ED4,var(--blue) 40%,#003268);box-shadow:0 5px 0 #003268,0 7px 10px rgba(0,0,0,.3)}
+.btn-yellow{background:linear-gradient(180deg,#FFE97A,var(--yellow) 40%,#B88A00);color:var(--black);text-shadow:0 1px 0 rgba(255,255,255,.5);box-shadow:0 5px 0 #8B6600,0 7px 10px rgba(0,0,0,.3)}
+.btn-green{background:linear-gradient(180deg,#26C66B,var(--green) 40%,#00702A);box-shadow:0 5px 0 #004F1C,0 7px 10px rgba(0,0,0,.3)}
+.btn-orange{background:linear-gradient(180deg,#FFA040,var(--orange) 40%,#9E3E00);box-shadow:0 5px 0 #7A2E00,0 7px 10px rgba(0,0,0,.3)}
+.btn-purple{background:linear-gradient(180deg,#C558E3,var(--purple) 40%,#580076);box-shadow:0 5px 0 #3D0052,0 7px 10px rgba(0,0,0,.3)}
+.btn-black{background:linear-gradient(180deg,#3A3A3A,var(--black) 40%,#000);box-shadow:0 5px 0 #000,0 7px 10px rgba(0,0,0,.3);border-color:#444}
+.btn-sm{font-size:12px;padding:8px 14px}
+.btn-sm::before{top:-7px;height:7px;width:16px}
+
+/* ── HEADER ── */
+.header{
+  background:linear-gradient(135deg,var(--red) 0%,var(--darkred) 50%,var(--black) 100%);
+  border-bottom:4px solid var(--yellow);
+  padding:14px 16px 10px;text-align:center;position:relative;z-index:10;
+  overflow:hidden;
+}
+.header::before{content:'';position:absolute;top:0;left:-20%;width:140%;height:100%;
+  background:repeating-linear-gradient(45deg,transparent 0,transparent 40px,rgba(255,255,255,.05) 40px,rgba(255,255,255,.05) 80px);
+  animation:slideBg 8s linear infinite;pointer-events:none}
+@keyframes slideBg{0%{transform:translateX(0)}100%{transform:translateX(-80px)}}
+.header h1{font-size:2.2rem;color:#fff;text-shadow:3px 3px 0 rgba(0,0,0,.4);letter-spacing:1px;position:relative}
+.header p{font-size:.9rem;color:#FFD;margin-top:3px;position:relative}
+
+.header-bar{position:absolute;top:12px;display:flex;gap:6px;align-items:center;z-index:11}
+.header-bar.left{left:14px}
+.header-bar.right{right:14px}
+
+.coin-chip{display:inline-flex;align-items:center;gap:5px;background:var(--yellow);
+  border:2.5px solid var(--black);border-radius:20px;padding:4px 11px;font-weight:bold;
+  font-size:.95rem;color:var(--black);box-shadow:0 3px 0 var(--black)}
+.coin-chip .coin-icon{font-size:1.1em;animation:spin 3s linear infinite}
+@keyframes spin{0%{transform:rotateY(0)}100%{transform:rotateY(360deg)}}
+
+.icon-btn{background:#fff;border:2.5px solid var(--black);border-radius:50%;
+  width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.2rem;box-shadow:0 3px 0 var(--black);transition:transform .1s;padding:0;color:var(--black)}
+.icon-btn:active{transform:translateY(2px)}
+
+/* ── SCREENS ── */
+.screen{display:none}
+.screen.active{display:block}
+.container{max-width:840px;margin:16px auto;padding:0 14px 180px;position:relative;z-index:10}
+
+.card{background:linear-gradient(180deg,#fff 0%,#F5F5F5 100%);color:var(--black);
+  border:4px solid var(--black);border-radius:14px;
+  padding:20px;box-shadow:0 7px 0 var(--red),0 10px 20px rgba(0,0,0,.25),inset 0 2px 0 rgba(255,255,255,.8);
+  margin-bottom:18px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:8px;
+  background-image:
+    linear-gradient(45deg,#000 25%,transparent 25%,transparent 75%,#000 75%,#000),
+    linear-gradient(45deg,#000 25%,#fff 25%,#fff 75%,#000 75%,#000);
+  background-size:14px 14px;background-position:0 0,7px 7px;background-color:#fff;
+  box-shadow:0 2px 0 rgba(0,0,0,.2)}
+
+/* ── HOME ── */
+.driver-preview{text-align:center;margin:8px 0;position:relative;padding-top:6px}
+.driver-preview .big-emoji{font-size:4rem;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3));animation:bob 2s ease-in-out infinite}
+.driver-preview .car-shadow{width:80px;height:10px;margin:-5px auto 0;background:radial-gradient(ellipse,rgba(0,0,0,.3) 0%,transparent 70%)}
+@keyframes bob{50%{transform:translateY(-6px)}}
+
+.mode-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.mode-inner{display:flex;flex-direction:column;align-items:center;gap:3px}
+.mode-inner span{font-size:.7em;font-weight:400}
+
+.circuit-label{display:inline-block;background:var(--black);color:var(--yellow);
+  padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:bold;
+  letter-spacing:1px;margin-bottom:6px;border:2px solid var(--yellow)}
+
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.howto-item{padding:11px;border-radius:8px;font-size:.88rem;border-left:4px solid;background:#FAFAFA;color:var(--black)}
+
+.mini-nav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+
+/* ── TROPHY SHELF ── */
+.trophy-shelf{
+  background:linear-gradient(180deg,#D7CCC8 0%,#8D6E63 100%);
+  border:3px solid var(--black);border-radius:10px;padding:10px 12px 6px;
+  position:relative;min-height:80px;display:flex;align-items:flex-end;gap:4px;flex-wrap:wrap;
+}
+.trophy-shelf::after{content:'';position:absolute;bottom:0;left:-3px;right:-3px;height:8px;
+  background:#5D4037;border-radius:0 0 8px 8px;border:3px solid var(--black);border-top:none}
+.trophy{font-size:1.4rem;transition:transform .3s;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+.trophy:hover{transform:translateY(-3px) scale(1.1)}
+
+/* ── START LIGHTS (game start animation) ── */
+.start-lights{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  display:flex;gap:12px;z-index:50;background:var(--black);padding:12px 20px;
+  border-radius:14px;border:4px solid #333;box-shadow:0 8px 20px rgba(0,0,0,.5)}
+.light{width:28px;height:28px;border-radius:50%;background:#330000;
+  box-shadow:inset 0 -3px 5px rgba(0,0,0,.5);transition:background .2s,box-shadow .2s}
+.light.red{background:var(--red);box-shadow:inset 0 -3px 5px rgba(0,0,0,.5),0 0 16px var(--red)}
+.light.green{background:var(--green);box-shadow:inset 0 -3px 5px rgba(0,0,0,.5),0 0 20px var(--green)}
+
+/* ── GAME HEADER ── */
+.g-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;margin-top:6px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;
+  border-radius:20px;font-weight:bold;font-size:.9rem;border:2.5px solid var(--black)}
+.badge-red{background:var(--red);color:#fff;box-shadow:0 3px 0 var(--darkred)}
+.badge-black{background:var(--black);color:var(--yellow);box-shadow:0 3px 0 #000}
+.badge-purple{background:var(--purple);color:#fff;box-shadow:0 3px 0 #4A0F5E}
+.stats{display:flex;gap:7px;flex-wrap:wrap}
+.stat{background:var(--black);color:var(--white);padding:5px 11px;border-radius:8px;
+  font-weight:bold;font-size:.83rem;border:2px solid #000}
+.stat .lbl{color:var(--yellow);margin-right:3px}
+.timer{background:var(--yellow);color:var(--black);padding:5px 11px;border-radius:20px;
+  font-weight:bold;font-size:.83rem;border:2px solid var(--black)}
+
+/* ── COMBO ── */
+.combo-display{position:absolute;top:20px;right:10px;background:var(--red);color:#fff;
+  padding:6px 14px;border-radius:20px;font-weight:bold;font-size:1rem;
+  border:3px solid var(--yellow);box-shadow:0 0 0 2px var(--red),0 4px 12px rgba(0,0,0,.4);
+  transform:scale(0);transition:transform .3s;z-index:20}
+.combo-display.show{transform:scale(1) rotate(-5deg);animation:comboWiggle 1s ease-in-out infinite}
+@keyframes comboWiggle{0%,100%{transform:scale(1) rotate(-5deg)}50%{transform:scale(1.1) rotate(5deg)}}
+.combo-display.mega{background:linear-gradient(45deg,#FFD700,#FF6B35,#FFD700);background-size:200% 200%;animation:comboWiggle 1s infinite,gradShift 1.5s infinite;color:var(--black)}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* ── POWER-UPS ── */
+.powerup-row{display:flex;gap:8px;margin-bottom:12px;justify-content:center}
+.powerup{width:56px;height:56px;border:3px solid var(--black);border-radius:10px;
+  background:linear-gradient(180deg,#FAFAFA 0%,#DDD 60%,#AAA 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;position:relative;cursor:pointer;transition:transform .2s;
+  box-shadow:0 4px 0 var(--black),inset 0 2px 0 rgba(255,255,255,.6),inset 0 -3px 0 rgba(0,0,0,.15)}
+/* LEGO stud on top of powerup tile */
+.powerup::after{content:'';position:absolute;top:4px;left:50%;transform:translateX(-50%);
+  width:14px;height:14px;border-radius:50%;background:inherit;border:1.5px solid rgba(0,0,0,.3);
+  box-shadow:inset 0 2px 2px rgba(255,255,255,.6),inset 0 -1px 1px rgba(0,0,0,.2);opacity:.6;pointer-events:none}
+.powerup.active{background:linear-gradient(180deg,#FFF59D 0%,var(--yellow) 50%,#B88A00 100%);cursor:pointer;
+  box-shadow:0 4px 0 #8B6600,inset 0 2px 0 rgba(255,255,255,.7),0 0 14px var(--yellow);animation:pulse 1.2s infinite}
+.powerup.active:hover{transform:scale(1.1)}
+.powerup.used{background:#E0E0E0;opacity:.5}
+@keyframes pulse{0%,100%{box-shadow:0 3px 0 var(--black),0 0 12px var(--yellow)}50%{box-shadow:0 3px 0 var(--black),0 0 22px var(--yellow)}}
+.powerup-count{position:absolute;bottom:-4px;right:-4px;background:var(--red);color:#fff;
+  font-size:.7rem;width:18px;height:18px;border-radius:50%;display:flex;
+  align-items:center;justify-content:center;border:2px solid #fff;font-weight:bold}
+
+/* ── LAP SEGMENTS (progress) ── */
+.progress-label{font-size:.82rem;color:#444;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;font-weight:bold}
+.bricks-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px;min-height:28px;
+  padding:6px;background:var(--asphalt);border-radius:6px;border:2px solid #000;position:relative}
+.bricks-row::before{content:'';position:absolute;top:50%;left:0;right:0;height:2px;
+  background:repeating-linear-gradient(to right,var(--yellow) 0,var(--yellow) 8px,transparent 8px,transparent 16px);
+  transform:translateY(-50%);opacity:.4}
+.brick{width:34px;height:20px;border-radius:3px;border:2px solid var(--black);
+  background:#666;position:relative;transition:background .25s,transform .2s;z-index:1;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.4),inset 0 -2px 0 rgba(0,0,0,.3),0 2px 3px rgba(0,0,0,.4)}
+.brick::before,.brick::after{content:'';position:absolute;top:-6px;width:12px;height:6px;
+  border-radius:3px 3px 0 0;background:inherit;border:2px solid var(--black);border-bottom:none;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.45)}
+.brick::before{left:3px}.brick::after{right:3px}
+.br-red{background:var(--red)!important}
+.br-black{background:var(--black)!important}
+.br-yellow{background:var(--yellow)!important}
+.br-silver{background:var(--silver)!important}
+.br-gold{background:linear-gradient(135deg,#FFE066,#FFD700,#B8860B)!important;
+  box-shadow:0 0 8px var(--yellow);animation:goldShine 1.5s infinite}
+@keyframes goldShine{50%{box-shadow:0 0 16px var(--yellow)}}
+@keyframes brickPop{0%{transform:scale(1)}50%{transform:scale(1.45) translateY(-9px)}100%{transform:scale(1)}}
+.brick.pop{animation:brickPop .4s ease-out}
+
+/* ── DRIVER + CAR ── */
+.minifig-area{text-align:center;font-size:3rem;margin:8px 0;min-height:62px;position:relative}
+#fig{display:inline-block;transition:transform .3s}
+@keyframes figHappy{0%{transform:scale(1) rotate(0)}30%{transform:scale(1.3) rotate(-15deg)}60%{transform:scale(1.3) rotate(15deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes figShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px) rotate(-5deg)}75%{transform:translateX(10px) rotate(5deg)}}
+@keyframes figJump{0%,100%{transform:translateY(0) scaleX(1)}50%{transform:translateY(-25px) scaleX(1.1)}}
+.fig-happy{animation:figHappy .5s ease-out}
+.fig-shake{animation:figShake .4s ease-out}
+.fig-jump{animation:figJump .6s ease-out}
+
+/* ── TARGET TEXT (3D LEGO plate) ── */
+.target{background:linear-gradient(180deg,#FAFAFA 0%,#E0E0E0 100%);
+  border:3px solid var(--black);border-radius:10px;padding:18px;
+  font-size:1.9rem;letter-spacing:4px;text-align:center;min-height:78px;
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2px;
+  line-height:1.65;margin-bottom:14px;position:relative;overflow:visible;color:var(--black);
+  box-shadow:inset 0 3px 0 rgba(255,255,255,.8),inset 0 -3px 0 rgba(0,0,0,.15),0 4px 6px rgba(0,0,0,.25)}
+.ch{display:inline-block;padding:2px 1px;border-radius:3px;transition:background .1s,color .1s}
+.ch.ok{background:#C8E6C9;color:#1B5E20}
+.ch.bad{background:#FFCDD2;color:#B71C1C;text-decoration:underline wavy #C62828}
+.ch.cur{background:var(--yellow);color:var(--black);animation:curBlink .7s infinite}
+@keyframes curBlink{0%,100%{background:var(--yellow)}50%{background:#FFF176}}
+
+/* ── INPUT ── */
+.typing-input{width:100%;padding:13px 16px;font-size:1.35rem;border:3px solid var(--red);
+  border-radius:8px;outline:none;font-family:inherit;letter-spacing:2px;
+  transition:border-color .2s,box-shadow .2s;margin-bottom:4px;color:var(--black)}
+.typing-input:focus{border-color:var(--yellow);box-shadow:0 0 0 3px rgba(255,215,0,.3)}
+.typing-input.success{border-color:var(--green);background:#F1F8E9}
+.typing-input.shield{border-color:var(--yellow);background:#FFF9C4;box-shadow:0 0 0 3px rgba(255,215,0,.4)}
+
+.hint{font-size:.8rem;color:#888;text-align:center;margin-bottom:8px}
+
+.feedback{text-align:center;min-height:40px;display:flex;align-items:center;justify-content:center}
+.fb-msg{font-size:1.3rem;font-weight:bold;opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s}
+.fb-msg.show{opacity:1;transform:translateY(0)}
+.fb-ok{color:var(--green)}
+.fb-err{color:var(--red)}
+.fb-bonus{color:var(--orange);font-size:1.5rem}
+
+.ctrl-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+
+/* ── FLOATING POINTS BUBBLE ── */
+.float-bubble{position:absolute;font-size:1.4rem;font-weight:bold;pointer-events:none;
+  animation:floatUp 1.2s ease-out forwards;z-index:30}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(.5)}
+  30%{opacity:1;transform:translateY(-20px) scale(1.2)}
+  100%{opacity:0;transform:translateY(-70px) scale(1)}}
+
+/* ── RACE TRACK (bottom) ── */
+.road{position:fixed;bottom:0;left:0;right:0;height:90px;z-index:3;pointer-events:none}
+.road-surface{position:absolute;bottom:0;left:0;right:0;height:60px;background:var(--asphalt);
+  border-top:4px solid var(--black);
+  box-shadow:inset 0 4px 6px rgba(0,0,0,.3)}
+/* Center yellow dashes */
+.road-line{position:absolute;bottom:28px;left:0;right:0;height:4px;
+  background-image:repeating-linear-gradient(to right,var(--yellow) 0,var(--yellow) 40px,transparent 40px,transparent 70px);
+  animation:lineMove 1s linear infinite}
+@keyframes lineMove{0%{background-position:0 0}100%{background-position:-110px 0}}
+/* Pit lane white */
+.road-pit{position:absolute;bottom:4px;left:0;right:0;height:3px;background:#fff;opacity:.7}
+.road-pit-top{position:absolute;bottom:56px;left:0;right:0;height:3px;background:#fff;opacity:.7}
+.vehicle{position:absolute;bottom:14px;animation:drive linear infinite;
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.55)) drop-shadow(6px 0 8px rgba(255,255,255,.2));
+  will-change:left}
+/* Cars natively face RIGHT now */
+.vehicle .car-svg{height:auto;max-height:40px}
+/* Motion blur trail behind the car (LEFT side) */
+.vehicle::before{content:'';position:absolute;top:50%;left:-60px;width:70px;height:5px;
+  background:linear-gradient(to left,rgba(255,255,255,.7),transparent);
+  transform:translateY(-50%);border-radius:3px;opacity:.8;filter:blur(1px)}
+/* Cars travel LEFT → RIGHT */
+@keyframes drive{0%{left:-160px}100%{left:calc(100% + 100px)}}
+/* Road speed streaks — short white flashes sliding left→right */
+.speedstreak{position:absolute;bottom:22px;width:50px;height:2px;
+  background:linear-gradient(to right,transparent,rgba(255,255,255,.75),transparent);
+  animation:streak linear infinite;pointer-events:none}
+@keyframes streak{0%{left:-80px}100%{left:calc(100% + 20px)}}
+/* Road dashes slide left→right (parallel to car direction) */
+@keyframes lineMove{0%{background-position:0 0}100%{background-position:-110px 0}}
+
+/* ── SPRINT BURST (on correct input) ── */
+.sprint-line{position:absolute;top:50%;left:-10%;width:120%;height:6px;
+  background:linear-gradient(to right,transparent 0%,rgba(255,215,0,.8) 30%,#fff 50%,rgba(255,215,0,.8) 70%,transparent 100%);
+  transform:translateY(-50%) scaleX(0);transform-origin:left center;
+  pointer-events:none;animation:sprintLineAnim .5s cubic-bezier(.22,.61,.36,1) forwards;
+  z-index:40;filter:blur(1px);border-radius:3px}
+@keyframes sprintLineAnim{
+  0%{transform:translateY(-50%) scaleX(0);opacity:0}
+  25%{opacity:1}
+  100%{transform:translateY(-50%) scaleX(1);opacity:0}
+}
+.sprint-car{position:absolute;top:50%;left:-90px;transform:translateY(-50%);
+  pointer-events:none;animation:sprintCarDash .55s ease-out forwards;
+  z-index:41;filter:drop-shadow(0 0 10px #FFD700)}
+.sprint-car .car-svg{max-height:46px}
+@keyframes sprintCarDash{
+  0%{left:-90px;opacity:0;transform:translateY(-50%) scale(.6)}
+  20%{opacity:1;transform:translateY(-50%) scale(1.1)}
+  100%{left:110%;opacity:0;transform:translateY(-50%) scale(.9)}
+}
+.sprint-flash{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,215,0,.4) 0%,transparent 70%);
+  pointer-events:none;animation:sprintFlashAnim .45s ease-out forwards;z-index:39;border-radius:10px}
+@keyframes sprintFlashAnim{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+/* Speed lines radiating from center */
+.sprint-streak{position:absolute;top:50%;height:3px;background:linear-gradient(to right,transparent,#FFD700);
+  transform:translateY(-50%);pointer-events:none;animation:sprintStreakAnim .45s ease-out forwards;
+  z-index:40;border-radius:2px;opacity:0}
+@keyframes sprintStreakAnim{
+  0%{opacity:0;width:0;left:50%}
+  30%{opacity:1}
+  100%{opacity:0;width:var(--sw);left:var(--sl)}
+}
+
+/* Checker flag finish line on road */
+.finish-line{position:absolute;bottom:0;right:10%;width:30px;height:60px;
+  background-image:
+    linear-gradient(45deg,#000 25%,transparent 25%,transparent 75%,#000 75%,#000),
+    linear-gradient(45deg,#000 25%,#fff 25%,#fff 75%,#000 75%,#000);
+  background-size:10px 10px;background-position:0 0,5px 5px;background-color:#fff;
+  opacity:.85;z-index:1}
+
+/* ── OVERLAYS ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;
+  align-items:center;justify-content:center;padding:16px}
+.overlay.show{display:flex}
+.overlay-card{background:#fff;color:var(--black);border:6px solid var(--red);border-radius:18px;
+  padding:28px 24px;text-align:center;max-width:440px;width:100%;
+  box-shadow:0 12px 0 var(--darkred);max-height:90vh;overflow-y:auto;position:relative}
+.overlay-card::before{content:'';position:absolute;top:0;left:0;right:0;height:12px;
+  background-image:
+    linear-gradient(45deg,#000 25%,transparent 25%,transparent 75%,#000 75%,#000),
+    linear-gradient(45deg,#000 25%,#fff 25%,#fff 75%,#000 75%,#000);
+  background-size:14px 14px;background-position:0 0,7px 7px;background-color:#fff;
+  border-radius:12px 12px 0 0}
+@keyframes cardIn{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+.overlay-card{animation:cardIn .45s cubic-bezier(.175,.885,.32,1.275)}
+.overlay-card h2{font-size:1.75rem;color:var(--red);margin:20px 0 6px}
+.stars{font-size:2.3rem;letter-spacing:5px;margin:10px 0}
+.score-table{background:#F5F5F5;border-radius:8px;padding:12px;margin:12px 0;font-size:.94rem;text-align:left}
+.score-table div{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #EEE}
+.score-table div:last-child{border-bottom:none}
+.complete-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+
+/* ── PODIUM ── */
+.podium{display:flex;justify-content:center;align-items:flex-end;gap:2px;margin:14px 0 6px;height:100px}
+.podium-step{width:70px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  color:#fff;font-weight:bold;font-size:1.8rem;border:3px solid var(--black);
+  border-bottom:none;position:relative}
+.podium-step .num{font-size:.85rem;margin-bottom:4px;opacity:.9}
+.podium-1{background:linear-gradient(180deg,#FFD700,#B8860B);height:100%;order:2}
+.podium-2{background:linear-gradient(180deg,#BDBDBD,#757575);height:80%;order:1}
+.podium-3{background:linear-gradient(180deg,#FFAB91,#BF5F3F);height:60%;order:3}
+.podium-step.active{animation:podiumRise .8s ease-out;box-shadow:0 0 20px var(--yellow)}
+@keyframes podiumRise{0%{transform:translateY(100px);opacity:0}100%{transform:translateY(0);opacity:1}}
+
+/* ── SHOP ── */
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin:14px 0}
+.shop-item{background:#F5F5F5;border:3px solid #DDD;border-radius:10px;padding:12px 6px;
+  text-align:center;cursor:pointer;transition:transform .15s,border-color .2s;position:relative}
+.shop-item:hover{transform:translateY(-3px)}
+.shop-item.selected{border-color:var(--red);background:#FFEBEE;box-shadow:0 0 0 3px rgba(220,0,0,.25)}
+.shop-item.locked{opacity:.55}
+.shop-item.locked::after{content:'🔒';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.8rem;z-index:2}
+.shop-item .emoji{font-size:2.4rem;display:block;margin-bottom:4px}
+.shop-item .name{font-size:.75rem;color:#333;font-weight:bold;margin-bottom:3px}
+.shop-item .price{font-size:.75rem;color:#B8860B;font-weight:bold}
+.shop-item.team{border-width:3px;overflow:hidden}
+.shop-item.team .team-banner{position:absolute;top:0;left:0;right:0;height:6px;
+  background:repeating-linear-gradient(45deg,var(--t) 0,var(--t) 10px,rgba(0,0,0,.4) 10px,rgba(0,0,0,.4) 20px)}
+.shop-item.team .team-label{font-size:.62rem;background:var(--t);color:var(--tt);
+  padding:2px 4px;border-radius:3px;display:inline-block;margin-top:4px;font-weight:bold;letter-spacing:.5px}
+.shop-item .ability-title{font-size:.7rem;color:#C62828;font-weight:bold;margin-top:6px;padding:0 2px}
+.shop-item .ability-desc{font-size:.65rem;color:#555;line-height:1.3;padding:2px;margin-top:2px}
+.shop-item.team::before{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--t) 0%,var(--t) 50%,#000 50%,#000 100%);background-size:8px 4px}
+
+/* ── INLINE SVG CARS (each F1 car drawn with team livery) ── */
+.car-svg{display:block;margin:0 auto;height:auto;max-width:100%}
+.shop-item .car-svg{max-height:52px;margin-bottom:4px}
+.driver-preview .car-svg{max-width:180px;margin:0 auto;filter:drop-shadow(0 5px 8px rgba(0,0,0,.3))}
+.minifig-area .car-svg{max-width:130px;margin:0 auto}
+.big-fallback{font-size:4rem;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3));animation:bob 2s ease-in-out infinite;display:inline-block}
+
+/* ── 3-SLOT EQUIPMENT ── */
+.equip-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0 10px}
+.equip-slot{background:linear-gradient(180deg,#FAFAFA 0%,#DDD 100%);
+  border:3px solid #777;border-radius:10px;
+  padding:8px 4px;text-align:center;cursor:pointer;transition:transform .15s,border-color .2s,box-shadow .2s;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 0 #555,inset 0 2px 0 rgba(255,255,255,.8),inset 0 -2px 0 rgba(0,0,0,.15)}
+.equip-slot:hover{transform:translateY(-3px);border-color:var(--red);border-style:solid}
+.equip-slot::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:repeating-linear-gradient(90deg,var(--black) 0,var(--black) 5px,var(--yellow) 5px,var(--yellow) 10px)}
+.slot-label{font-size:.72rem;font-weight:bold;color:#666;margin-bottom:4px;padding-top:4px}
+.slot-preview{min-height:54px;display:flex;align-items:center;justify-content:center}
+.slot-preview .big-fallback{font-size:2.4rem;animation:none}
+.slot-name{font-size:.7rem;color:var(--black);font-weight:bold;margin-top:4px;min-height:18px;line-height:1.2}
+.combined-ability{margin-top:8px;background:#FFFDE7;border:2px solid var(--yellow);border-radius:8px;padding:10px;font-size:.78rem;line-height:1.45}
+.combined-ability b{color:var(--red)}
+
+/* ── SHOP TABS ── */
+.shop-tabs{display:flex;gap:4px;margin:12px 0 2px;justify-content:center}
+.shop-tab{padding:8px 12px;border:3px solid var(--black);border-bottom:none;
+  border-radius:8px 8px 0 0;background:#E0E0E0;color:#444;font-weight:bold;font-size:.78rem;
+  cursor:pointer;transition:transform .1s,background .2s;white-space:nowrap}
+.shop-tab.active{background:var(--red);color:#fff;transform:translateY(-2px);box-shadow:0 -3px 0 var(--darkred)}
+.shop-tab:active{transform:translateY(1px)}
+
+/* ── ACH ── */
+.ach-list{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.ach-item{display:flex;align-items:center;gap:12px;background:#F5F5F5;border-radius:10px;
+  padding:10px 14px;border-left:5px solid #BDBDBD;transition:background .3s}
+.ach-item.unlocked{background:#FFEBEE;border-left-color:var(--red)}
+.ach-item .a-icon{font-size:2rem;filter:grayscale(1);transition:filter .3s}
+.ach-item.unlocked .a-icon{filter:none}
+.ach-item .a-info{flex:1;text-align:left}
+.ach-item .a-title{font-weight:bold;font-size:.95rem}
+.ach-item .a-desc{font-size:.78rem;color:#666;margin-top:2px}
+
+/* ── CONFETTI ── */
+.confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:200;overflow:hidden}
+@keyframes cFall{0%{top:-20px;opacity:1}100%{top:110vh;opacity:.4}}
+.c-piece{position:absolute;width:11px;height:11px;top:-20px;animation:cFall linear forwards}
+
+/* ── TOAST ── */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-80px);
+  background:var(--black);color:#fff;padding:10px 18px;border-radius:25px;
+  font-weight:bold;font-size:.9rem;z-index:250;opacity:0;transition:transform .4s,opacity .3s;
+  box-shadow:0 4px 12px rgba(0,0,0,.4);border:3px solid var(--yellow);max-width:90%}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* ── PARTICLES ── */
+.particle{position:absolute;pointer-events:none;font-size:1.4rem;animation:partBurst .8s ease-out forwards;z-index:30}
+@keyframes partBurst{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(.4)}
+  100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(1.1)}
+}
+
+/* ── FULLSCREEN START LIGHTS OVERLAY ── */
+.light-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;
+  align-items:center;justify-content:center;flex-direction:column;gap:20px}
+.light-overlay.show{display:flex}
+.light-overlay .go-text{font-size:3rem;color:var(--yellow);font-weight:bold;
+  text-shadow:0 0 20px var(--yellow);opacity:0;transition:opacity .3s}
+.light-overlay .go-text.show{opacity:1;animation:goFlash .6s ease-out}
+@keyframes goFlash{0%{transform:scale(.3)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
+
+/* ── GM MODE ── */
+.gm-badge{position:fixed;top:4px;left:50%;transform:translateX(-50%);z-index:260;
+  background:linear-gradient(90deg,#9C27B0,#E91E63,#FF5722);color:#fff;
+  padding:3px 14px;border-radius:0 0 10px 10px;font-size:.75rem;font-weight:900;
+  letter-spacing:2px;border:2px solid var(--yellow);border-top:none;
+  box-shadow:0 3px 10px rgba(0,0,0,.5);display:none;animation:gmPulse 1.5s infinite}
+.gm-badge.show{display:block}
+@keyframes gmPulse{50%{box-shadow:0 3px 20px #E91E63}}
+
+.gm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.gm-grid button{font-size:12px;padding:10px 8px;border:2px solid var(--black);
+  border-radius:8px;background:#F5F5F5;font-weight:bold;cursor:pointer;color:var(--black);
+  text-align:left;line-height:1.3;transition:transform .1s,background .2s}
+.gm-grid button:hover{background:#FFF9C4}
+.gm-grid button:active{transform:translateY(2px)}
+.gm-grid button.danger{background:#FFEBEE;border-color:var(--red);color:var(--red)}
+.gm-grid button.tag{background:linear-gradient(135deg,#9C27B0,#E91E63);color:#fff;border-color:#4A148C}
+
+.ability-showcase{max-height:340px;overflow-y:auto;margin:10px 0;border:2px solid #DDD;border-radius:8px;padding:6px;background:#FAFAFA}
+.ability-row{display:flex;gap:8px;align-items:center;padding:6px;border-bottom:1px solid #EEE;font-size:.78rem;text-align:left}
+.ability-row:last-child{border-bottom:none}
+.ability-row button{padding:4px 10px;font-size:.7rem;border:2px solid var(--black);
+  border-radius:6px;background:var(--yellow);font-weight:bold;cursor:pointer;white-space:nowrap}
+.ability-row .ab-name{flex:1;font-weight:bold;color:var(--black)}
+.ability-row .ab-mini-desc{flex:2;color:#666;font-size:.7rem}
+
+/* ── RESPONSIVE ── */
+@media(max-width:560px){
+  .header h1{font-size:1.4rem}
+  .header-bar.left{top:8px;left:8px}
+  .header-bar.right{top:8px;right:8px}
+  .target{font-size:1.3rem;letter-spacing:2px}
+  .typing-input{font-size:1.05rem}
+  .howto-grid{grid-template-columns:1fr}
+  .container{padding-bottom:140px}
+}
+</style>
+</head>
+<body>
+
+<!-- Background decorations -->
+<div class="grandstand"></div>
+<div class="speedlines"></div>
+
+<!-- GM MODE BADGE + PANEL -->
+<div class="gm-badge" id="gm-badge" onclick="openGM()">🎮 GM MODE — 點我測試</div>
+<div class="overlay" id="overlay-gm">
+  <div class="overlay-card">
+    <h2 style="color:#9C27B0">🎮 GM 測試模式</h2>
+    <p style="font-size:.82rem;color:#666;margin-top:4px">開發者／測試專用。任何車款能力都能試玩。</p>
+    <div class="gm-grid">
+      <button onclick="gmAddCoins()">💰 +9999 金幣</button>
+      <button onclick="gmUnlockAll()">🔓 解鎖所有車款</button>
+      <button onclick="gmMaxPower()">⚡ 道具補滿 (×9)</button>
+      <button onclick="gmAllAchs()">🏆 解鎖全成就</button>
+      <button onclick="gmForceBoss()">👑 下關強制 BOSS</button>
+      <button onclick="gmGoldEverywhere()">🏅 下關全金磚</button>
+      <button onclick="gmSetCombo()">🔥 立即連擊 x20</button>
+      <button onclick="gmLvlJump()">⏩ 立即結束此關</button>
+      <button class="tag" onclick="gmToggleFast()">🚀 極速模式 <span id="gm-fast-state">OFF</span></button>
+      <button class="tag" onclick="gmSkipIntro()">🏁 跳過起跑燈 <span id="gm-intro-state">OFF</span></button>
+      <button class="danger" onclick="gmReset()">🗑️ 清除存檔並重載</button>
+      <button class="danger" onclick="gmExit()">❌ 關閉 GM 模式</button>
+    </div>
+    <h3 style="margin-top:14px;font-size:1rem;color:#9C27B0">🧪 能力快速測試（點擊切換車款）</h3>
+    <div class="ability-showcase" id="ability-showcase"></div>
+    <button class="btn btn-red" onclick="closeOverlay('overlay-gm')">關閉</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-bar left">
+    <span class="coin-chip"><span class="coin-icon">🏁</span><span id="coin-count">0</span></span>
+  </div>
+  <div class="header-bar right">
+    <button class="icon-btn" onclick="toggleSound()" title="音效" id="sound-btn">🔊</button>
+    <button class="icon-btn" onclick="openShop()" title="車庫">🏎️</button>
+    <button class="icon-btn" onclick="openAch()" title="獎盃室">🏆</button>
+  </div>
+  <h1>🏁 速度冠軍 打字賽道</h1>
+  <p>Speed Typing Circuit — 踩下油門，衝向領獎台！</p>
+</div>
+<div class="checker"></div>
+
+<div class="container">
+
+  <!-- ══ HOME ══ -->
+  <div id="home" class="screen active">
+    <div class="card">
+      <div class="circuit-label" style="display:block;text-align:center;margin:0 auto 10px">🏎️ 你的裝備</div>
+      <div class="equip-row">
+        <div class="equip-slot" onclick="openShop('helmet')">
+          <div class="slot-label">🪖 安全帽</div>
+          <div class="slot-preview" id="slot-helmet"></div>
+          <div class="slot-name" id="slot-helmet-name"></div>
+        </div>
+        <div class="equip-slot" onclick="openShop('car')">
+          <div class="slot-label">🏎️ 賽車</div>
+          <div class="slot-preview" id="slot-car"></div>
+          <div class="slot-name" id="slot-car-name"></div>
+        </div>
+        <div class="equip-slot" onclick="openShop('gear')">
+          <div class="slot-label">🛠️ 道具</div>
+          <div class="slot-preview" id="slot-gear"></div>
+          <div class="slot-name" id="slot-gear-name"></div>
+        </div>
+      </div>
+      <div class="combined-ability" id="combined-ability"></div>
+      <h2 style="text-align:center;margin-bottom:4px">🏁 選擇賽道 Select Circuit</h2>
+      <p style="text-align:center;color:#888;font-size:.85rem;margin-bottom:12px">Choose Your Race Circuit</p>
+      <div class="mode-btns">
+        <button class="btn btn-black" onclick="startRace('en')">
+          <div class="mode-inner">🇬🇧 Silverstone<span>英文賽道</span></div>
+        </button>
+        <button class="btn btn-red" onclick="startRace('zh')">
+          <div class="mode-inner">🇹🇼 Taipei GP<span>中文賽道</span></div>
+        </button>
+        <button class="btn btn-yellow" onclick="startRace('mix')">
+          <div class="mode-inner">🌏 Monaco<span>雙語賽道</span></div>
+        </button>
+      </div>
+      <div class="mini-nav">
+        <button class="btn btn-orange btn-sm" onclick="openShop()">🏎️ 車庫 Garage</button>
+        <button class="btn btn-purple btn-sm" onclick="openAch()">🏆 獎盃室 Trophies</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="text-align:center;margin-bottom:10px">🏁 比賽規則 How to Race</h3>
+      <div class="howto-grid">
+        <div class="howto-item" style="border-color:var(--red)">
+          <strong>① 選賽道</strong><br>英文 / 中文 / 雙語
+        </div>
+        <div class="howto-item" style="border-color:var(--green)">
+          <strong>② 打完每一圈</strong><br>黃色格子 = 下一個字
+        </div>
+        <div class="howto-item" style="border-color:var(--blue)">
+          <strong>③ 超車連擊</strong><br>連續答對累積倍率
+        </div>
+        <div class="howto-item" style="border-color:var(--yellow)">
+          <strong>④ 使用賽道道具</strong><br>⚠️🏁🚁 隨機掉落
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="text-align:center;margin-bottom:6px">🏆 你的獎盃室 Trophy Room</h3>
+      <p style="text-align:center;font-size:.8rem;color:#888;margin-bottom:8px">
+        完成比賽累積獎盃（目前 <span id="city-count">0</span> 座）
+      </p>
+      <div class="trophy-shelf" id="trophy-shelf"></div>
+    </div>
+  </div>
+
+  <!-- ══ GAME ══ -->
+  <div id="game" class="screen">
+    <div class="card" style="position:relative">
+      <div class="combo-display" id="combo-disp">🔥 超車 x<span id="combo-n">0</span></div>
+
+      <div class="g-header">
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <span class="badge badge-red">🏁 GP <span id="lvl-num">1</span></span>
+          <span class="badge badge-black">🔄 S<span id="cycle-num">1</span></span>
+          <span class="badge badge-purple" id="boss-badge" style="display:none">👑 FINAL</span>
+        </div>
+        <div class="stats">
+          <div class="stat"><span class="lbl">⚡</span><span id="wpm">0</span></div>
+          <div class="stat"><span class="lbl">✅</span><span id="acc">100</span>%</div>
+          <div class="timer">⏱ <span id="sec">0</span>s</div>
+        </div>
+      </div>
+
+      <div class="powerup-row">
+        <div class="powerup" id="pu-shield" onclick="usePowerup('shield')" title="黃旗安全車：下次打錯不扣分">
+          ⚠️<span class="powerup-count" id="cnt-shield">0</span>
+        </div>
+        <div class="powerup" id="pu-double" onclick="usePowerup('double')" title="DRS 加速：下一題積分 x2">
+          🏁<span class="powerup-count" id="cnt-double">0</span>
+        </div>
+        <div class="powerup" id="pu-skip" onclick="usePowerup('skip')" title="進站 Pit Stop：跳過此題">
+          🚁<span class="powerup-count" id="cnt-skip">0</span>
+        </div>
+      </div>
+
+      <div class="progress-label">
+        <span>🏎️ 賽道進度</span>
+        <span id="progress-text">LAP 0 / 0</span>
+      </div>
+      <div class="bricks-row" id="bricks-row"></div>
+
+      <div class="minifig-area"><span id="fig">🏎️</span></div>
+
+      <div class="target" id="target"></div>
+
+      <input type="text" id="inp" class="typing-input"
+        placeholder="打字衝線… Type to race…"
+        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <div class="hint" id="hint">打出上面的文字 ⬆️</div>
+
+      <div class="feedback"><div class="fb-msg" id="fb"></div></div>
+
+      <div class="ctrl-row">
+        <button class="btn btn-yellow btn-sm" onclick="skipWord()">⏭ 跳過</button>
+        <button class="btn btn-orange btn-sm" onclick="goHome()">🏠 回賽道選擇</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RACE TRACK + VEHICLES -->
+<div class="road">
+  <div class="road-surface"></div>
+  <div class="road-pit-top"></div>
+  <div class="road-line"></div>
+  <div class="road-pit"></div>
+  <div class="finish-line"></div>
+  <div class="speedstreak" style="animation-duration:1.6s;bottom:42px"></div>
+  <div class="speedstreak" style="animation-duration:2.1s;animation-delay:-.6s;bottom:22px"></div>
+  <div class="speedstreak" style="animation-duration:1.4s;animation-delay:-.3s;bottom:32px"></div>
+  <div class="speedstreak" style="animation-duration:1.9s;animation-delay:-1.1s;bottom:38px"></div>
+  <div id="road-cars"></div>
+</div>
+
+<!-- START LIGHTS OVERLAY -->
+<div class="light-overlay" id="light-overlay">
+  <div class="start-lights">
+    <div class="light" id="l1"></div>
+    <div class="light" id="l2"></div>
+    <div class="light" id="l3"></div>
+    <div class="light" id="l4"></div>
+    <div class="light" id="l5"></div>
+  </div>
+  <div class="go-text" id="go-text">🏁 GO GO GO!</div>
+</div>
+
+<!-- RACE COMPLETE OVERLAY -->
+<div class="overlay" id="overlay-lvl">
+  <div class="overlay-card">
+    <div style="font-size:3rem;margin-top:16px;margin-bottom:4px" id="cmp-icon">🏆</div>
+    <h2 id="cmp-title">衝線！</h2>
+    <div class="stars" id="cmp-stars">🥇🥇🥇</div>
+    <div class="podium" id="podium-display">
+      <div class="podium-step podium-2"><div class="num">2nd</div>🥈</div>
+      <div class="podium-step podium-1 active"><div class="num">1st</div>🥇</div>
+      <div class="podium-step podium-3"><div class="num">3rd</div>🥉</div>
+    </div>
+    <div class="score-table" id="cmp-score"></div>
+    <div class="complete-btns">
+      <button class="btn btn-green" onclick="nextLevel()">➡️ 下一場 Next GP</button>
+      <button class="btn btn-blue" onclick="replayLevel()">🔄 再賽 Replay</button>
+      <button class="btn btn-red" onclick="goHome()">🏠 回家</button>
+    </div>
+  </div>
+</div>
+
+<!-- GARAGE (Shop) -->
+<div class="overlay" id="overlay-shop">
+  <div class="overlay-card">
+    <h2>🏎️ 車庫 Garage</h2>
+    <p style="font-size:.8rem;color:#666;margin-top:4px">三欄位獨立裝備，能力自動疊加</p>
+    <div style="margin:8px 0"><span class="coin-chip"><span class="coin-icon">🏁</span><span id="shop-coins">0</span></span></div>
+    <div class="shop-tabs">
+      <button class="shop-tab" data-cat="helmet" onclick="switchTab('helmet')">🪖 安全帽</button>
+      <button class="shop-tab" data-cat="car" onclick="switchTab('car')">🏎️ 賽車</button>
+      <button class="shop-tab" data-cat="gear" onclick="switchTab('gear')">🛠️ 道具</button>
+    </div>
+    <div class="shop-grid" id="shop-grid"></div>
+    <button class="btn btn-red" onclick="closeOverlay('overlay-shop')">關閉 Close</button>
+  </div>
+</div>
+
+<!-- TROPHY ROOM (Achievements) -->
+<div class="overlay" id="overlay-ach">
+  <div class="overlay-card">
+    <h2>🏆 獎盃室 Trophy Room</h2>
+    <p style="font-size:.85rem;color:#666;margin-top:4px">解鎖成就領取積分獎勵</p>
+    <div class="ach-list" id="ach-list"></div>
+    <button class="btn btn-red" onclick="closeOverlay('overlay-ach')">關閉 Close</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CONFETTI -->
+<div class="confetti-wrap" id="confetti"></div>
+
+<script>
+/* ═══════ WORD BANKS ═══════ */
+const BANKS={
+  en:[
+    {label:'熱身圈 Warm-up',words:['car','box','red','run','zip','go','rev','fun','hot','map','pit','gas','fast','win']},
+    {label:'練習圈 Practice',words:['race','fast','turn','lap','pole','flag','team','tire','pit stop','crew','drs','gear']},
+    {label:'資格賽 Qualifying',words:['fast car','red tire','pole win','pit lane','lap time','race day','top speed','turn one']},
+    {label:'F1 車隊 Teams',words:['Ferrari','McLaren','Red Bull','Mercedes','BMW','Williams','Aston Martin','Alpine','Haas','APXGP']},
+    {label:'F1 車型 Models',words:['SF-24','MCL38','RB20','W15','M4 GT3','F2004','MP4/4','FW14B','AMR24','DeLorean']},
+    {label:'傳奇車手 Legends',words:['Senna','Schumacher','Mansell','Hamilton','Leclerc','Verstappen','Norris','Russell','Piastri','Alonso']},
+    {label:'正賽 Race',words:['Start your engines!','Lights out and away!','Pit stop now!','Cross the line!','Podium finish!']},
+    {label:'冠軍賽 Championship',words:['I won the race today!','My Ferrari is the fastest.','McLaren takes pole position!','Red Bull leads the pack!','Mercedes crosses the line!']},
+  ],
+  zh:[
+    {label:'熱身圈',words:['車','快','紅','賽','跑','衝','圈','旗','油','彎','零','秒','王','一']},
+    {label:'練習圈',words:['賽車','車手','冠軍','速度','超車','衝線','圈速','進站','安全車','領獎','紅旗','黑旗']},
+    {label:'F1 車隊',words:['法拉利','麥拉倫','紅牛','賓士','寶馬','威廉斯','阿斯頓馬丁','愛快羅密歐','哈斯','奧迪']},
+    {label:'F1 車手',words:['漢米爾頓','維斯塔潘','勒克萊爾','諾里斯','羅素','塞恩斯','皮亞斯特里','阿隆索']},
+    {label:'F1 傳奇',words:['冼拿','舒馬克','曼塞爾','普羅斯特','亞頓冼拿','紅色法拉利','白色麥拉倫','藍色威廉斯']},
+    {label:'資格賽',words:['紅色賽車','速度之王','衝向終點','超車成功','排位第一','賽道上的英雄','閃電超車','完美圈速']},
+    {label:'正賽',words:['綠燈亮起，衝啊！','法拉利引擎發動。','麥拉倫奪下竿位！','紅牛領先全場。','賓士衝過終點線！']},
+    {label:'冠軍賽',words:['今天我贏得了冠軍！','紅色法拉利跑得最快。','冠軍拿到了方格旗。','我們一起衝向終點線。','F1 賽車真的好快！']},
+  ],
+  mix:[
+    {label:'雙語熱身',words:['car 車','fast 快','red 紅','race 賽車','flag 旗','pit 進站','win 贏']},
+    {label:'雙語練習',words:['pole position 竿位','pit stop 進站','lap time 圈速','fast car 快車','red team 紅隊']},
+    {label:'F1 車隊雙語',words:['Ferrari 法拉利','McLaren 麥拉倫','Red Bull 紅牛','Mercedes 賓士','BMW 寶馬','APXGP 車隊']},
+    {label:'雙語正賽',words:['Go go go! 衝啊！','I won! 我贏了！','Fast car! 快車！','Pit stop! 進站！','Champion! 冠軍！']},
+  ],
+};
+
+/* ═══════ GARAGE — 3 獨立欄位：安全帽 / 賽車 / 道具 ═══════ */
+/* svg: {variant?, colors:[body,accent,stripe], num?, pattern?}
+   ability: {name, desc, ...effects} — effect keys:
+     coinBoost, goldMult, startShield/Double/Skip, startCombo,
+     comboThreshold, autoShield, perfectBonus, bossMult,
+     luckyCoin+luckyCoinAmt, every7Bonus, comboProtect, starBonus */
+
+const HELMETS=[
+  {id:'noob',name:'新手頭盔',price:0,
+    svg:{variant:'helmet',colors:['#1976D2','#FFF','#FFD700'],num:'2'},
+    ability:{name:'🪖 新手上路',desc:'標準配備。'}},
+  {id:'hamhelm',name:'Hamilton 頭盔',price:180,team:'#FFD700',teamText:'#E30613',label:'🟡 HAMILTON #44',
+    svg:{variant:'helmet',colors:['#FFD700','#E30613','#6A1B9A'],num:'44'},
+    ability:{name:'🏆 七冠王',desc:'每打對 7 個詞 +7 金幣。',every7Bonus:7}},
+  {id:'lechelm',name:'Leclerc 頭盔',price:180,team:'#E30613',teamText:'#FFF',label:'🔴 LECLERC #16',
+    svg:{variant:'helmet',colors:['#E30613','#FFF','#FFD700'],num:'16'},
+    ability:{name:'⭐ 法拉利新星',desc:'關卡每顆星 +15 金幣。',starBonus:15}},
+  {id:'maxhelm',name:'Verstappen 頭盔',price:220,team:'#1E41FF',teamText:'#FFED00',label:'🐂 VERSTAPPEN #1',
+    svg:{variant:'helmet',colors:['#1E41FF','#FFED00','#DC0000'],num:'1'},
+    ability:{name:'🐂 連霸戰神',desc:'連擊門檻降到 2。',comboThreshold:2}},
+  {id:'norrishelm',name:'Norris 頭盔',price:180,team:'#FF8000',teamText:'#000',label:'🟠 NORRIS #4',
+    svg:{variant:'helmet',colors:['#FF8000','#000','#00A2FF'],num:'4'},
+    ability:{name:'🟠 Papaya 能量',desc:'完美關卡 +80 金幣。',perfectBonus:80}},
+  {id:'russellhelm',name:'Russell 頭盔',price:180,team:'#00D2BE',teamText:'#000',label:'⚫ RUSSELL #63',
+    svg:{variant:'helmet',colors:['#00D2BE','#000','#C0C0C0'],num:'63'},
+    ability:{name:'💨 Silver Stream',desc:'每題金幣 +12%。',coinBoost:0.12}},
+  {id:'piastrihelm',name:'Piastri 頭盔',price:200,team:'#FF6F00',teamText:'#000',label:'🇦🇺 PIASTRI #81',
+    svg:{variant:'helmet',colors:['#FF6F00','#000','#00A2FF'],num:'81'},
+    ability:{name:'🦘 袋鼠衝刺',desc:'開場連擊 +2。',startCombo:2}},
+  {id:'alonsohelm',name:'Alonso 頭盔',price:200,team:'#006F62',teamText:'#FFD700',label:'🟢 ALONSO #14',
+    svg:{variant:'helmet',colors:['#006F62','#FFD700','#DC0000'],num:'14'},
+    ability:{name:'🧓 老將智慧',desc:'BOSS 關金幣 x1.5。',bossMult:1.5}},
+  {id:'sennahelm',name:'Senna 傳奇頭盔',price:350,team:'#FFD500',teamText:'#006F00',label:'🏆 AYRTON SENNA',
+    svg:{variant:'helmet',colors:['#FFD500','#006F00','#DC0000'],num:'1'},
+    ability:{name:'✨ Magic at Monaco',desc:'完美關卡 +150 金幣。',perfectBonus:150}},
+  {id:'schumihelm',name:'Schumacher 頭盔',price:320,team:'#E30613',teamText:'#FFF',label:'🏆 MICHAEL SCHUMACHER',
+    svg:{variant:'helmet',colors:['#E30613','#FFF','#000'],num:'1'},
+    ability:{name:'🏆 車王本色',desc:'每題金幣 +15% + 5% 幸運 +5。',coinBoost:0.15,luckyCoin:0.05,luckyCoinAmt:5}},
+];
+
+const CARS=[
+  {id:'practice',name:'練習車',price:0,
+    svg:{colors:['#424242','#FFF','#FFC107'],num:'99'},
+    ability:{name:'🏎️ 標準車',desc:'無特殊效果。'}},
+  {id:'ferrari',name:'Ferrari SF-24',price:150,team:'#DC0000',teamText:'#FFF',label:'🇮🇹 SCUDERIA FERRARI',
+    svg:{colors:['#DC0000','#FFD700','#000'],num:'16',pattern:'ferrari'},
+    ability:{name:'🇮🇹 Tifosi 熱情',desc:'每題金幣 +20%。',coinBoost:0.20}},
+  {id:'mclaren',name:'McLaren MCL38',price:150,team:'#FF8000',teamText:'#000',label:'🟠 McLAREN F1',
+    svg:{colors:['#FF8000','#000','#00A2FF'],num:'4',pattern:'mclaren'},
+    ability:{name:'🟠 Papaya Combo',desc:'連擊門檻降到 2。',comboThreshold:2}},
+  {id:'redbull',name:'Red Bull RB20',price:180,team:'#1E41FF',teamText:'#FFED00',label:'🐂 ORACLE RED BULL',
+    svg:{colors:['#0A2E6E','#FED703','#DC0000'],num:'1',pattern:'redbull'},
+    ability:{name:'🏁 DRS 開啟',desc:'每關開場 +1 💎。',startDouble:1}},
+  {id:'mercedes',name:'Mercedes W15',price:180,team:'#00D2BE',teamText:'#000',label:'⭐ AMG PETRONAS',
+    svg:{colors:['#000','#00D2BE','#C0C0C0'],num:'63',pattern:'mercedes'},
+    ability:{name:'⭐ Silver Arrow',desc:'完美關卡 +60 金幣。',perfectBonus:60}},
+  {id:'bmw',name:'BMW M4 GT3',price:160,team:'#0066B1',teamText:'#FFF',label:'🔵 BMW M MOTORSPORT',
+    svg:{colors:['#FFF','#0066B1','#DC0000'],num:'1',pattern:'bmw'},
+    ability:{name:'🔵 M Power',desc:'每題 15% 機率 +4 金幣。',luckyCoin:0.15,luckyCoinAmt:4}},
+  {id:'apxgp',name:'APXGP F1',price:220,team:'#000',teamText:'#FFD700',label:'⚡ F1 THE MOVIE',
+    svg:{colors:['#000','#FFD700','#FFD700'],num:'44',pattern:'apxgp'},
+    ability:{name:'🎬 Hollywood Magic',desc:'金磚倍率 x2（5x→10x）。',goldMult:2}},
+  {id:'delorean',name:'DeLorean 時光車',price:200,team:'#C0C0C0',teamText:'#000',label:'⏰ BACK TO THE FUTURE',
+    svg:{variant:'delorean',colors:['#C0C0C0','#333','#00E5FF']},
+    ability:{name:'⏰ 時光倒流',desc:'每關首次失誤自動護盾。',autoShield:true}},
+  {id:'f2004',name:'Ferrari F2004',price:280,team:'#E30613',teamText:'#FFF',label:'🏆 SCHUMACHER 2004',
+    svg:{variant:'classic',colors:['#DC0000','#FFF','#FFF'],num:'1'},
+    ability:{name:'🏆 車王傳奇',desc:'BOSS 關金幣 x2。',bossMult:2}},
+  {id:'mp44',name:'McLaren MP4/4',price:280,team:'#FFF',teamText:'#E30613',label:'🏆 SENNA 1988',
+    svg:{variant:'classic',colors:['#FFF','#DC0000','#DC0000'],num:'12'},
+    ability:{name:'✨ Senna Magic',desc:'完美關卡 +100 金幣。',perfectBonus:100}},
+  {id:'fw14b',name:'Williams FW14B',price:260,team:'#003399',teamText:'#FFD500',label:'🏆 MANSELL 1992',
+    svg:{variant:'classic',colors:['#003399','#FFD500','#FFF'],num:'5'},
+    ability:{name:'🔧 主動懸吊',desc:'連擊不因單次失誤歸零（每關 1 次）。',comboProtect:1}},
+];
+
+const GEAR=[
+  {id:'none',name:'無裝備',price:0,emoji:'➖',
+    ability:{name:'🛠️ 空欄位',desc:'沒有額外加成。'}},
+  {id:'soft-tire',name:'軟胎 Soft Tyre',price:80,emoji:'🔴',
+    ability:{name:'🔴 黏地軟胎',desc:'每題金幣 +10%。',coinBoost:0.10}},
+  {id:'hard-tire',name:'硬胎 Hard Tyre',price:80,emoji:'⚫',
+    ability:{name:'⚫ 耐磨硬胎',desc:'每關開場 +1 🛡️ 護盾。',startShield:1}},
+  {id:'drs-wing',name:'DRS 尾翼',price:120,emoji:'🪽',
+    ability:{name:'🪽 可變尾翼',desc:'連擊門檻降到 2。',comboThreshold:2}},
+  {id:'nitro',name:'Nitro 氮氣罐',price:140,emoji:'💨',
+    ability:{name:'💨 瞬間加速',desc:'開場連擊 +3。',startCombo:3}},
+  {id:'fuel-can',name:'燃料罐 Fuel',price:100,emoji:'⛽',
+    ability:{name:'⛽ 滿油出發',desc:'每關開場 +1 💎 雙倍。',startDouble:1}},
+  {id:'halo',name:'Halo 座艙罩',price:160,emoji:'⭕',
+    ability:{name:'⭕ Halo 保護',desc:'每關首次失誤自動擋下。',autoShield:true}},
+  {id:'data',name:'數據工程師',price:140,emoji:'📊',
+    ability:{name:'📊 賽道數據',desc:'每題 15% 機率 +5 金幣。',luckyCoin:0.15,luckyCoinAmt:5}},
+  {id:'radio',name:'車隊無線電',price:120,emoji:'📻',
+    ability:{name:'📻 即時指令',desc:'連擊不因單次失誤歸零（每關 1 次）。',comboProtect:1}},
+  {id:'stopwatch',name:'圈速計時器',price:150,emoji:'⏱️',
+    ability:{name:'⏱️ 極速圈速',desc:'完美關卡 +50 金幣。',perfectBonus:50}},
+  {id:'turbo',name:'Turbo 渦輪',price:200,emoji:'🌀',
+    ability:{name:'🌀 Turbo Boost',desc:'每題金幣 +15%。',coinBoost:0.15}},
+  {id:'champagne',name:'香檳噴瓶',price:180,emoji:'🍾',
+    ability:{name:'🍾 頒獎慶祝',desc:'每顆星 +10 金幣。',starBonus:10}},
+  {id:'trophy-stand',name:'冠軍獎盃',price:250,emoji:'🏆',
+    ability:{name:'🏆 冠軍之證',desc:'完美 +60 + 每顆星 +8。',perfectBonus:60,starBonus:8}},
+  {id:'pit-crew',name:'Pit Crew 團隊',price:160,emoji:'🧑‍🔧',
+    ability:{name:'🔧 進站神隊友',desc:'每關開場 +1 🛡️ +1 ⏭️。',startShield:1,startSkip:1}},
+];
+
+/* ═══════ EQUIPMENT HELPERS ═══════ */
+function getEquipped(){
+  return {
+    helmet: HELMETS.find(h=>h.id===S.equip.helmet) || HELMETS[0],
+    car:    CARS.find(c=>c.id===S.equip.car)       || CARS[0],
+    gear:   GEAR.find(g=>g.id===S.equip.gear)      || GEAR[0],
+  };
+}
+function currentAbility(){  // merged ability from all 3 slots
+  const e=getEquipped();
+  const out={name:'',desc:''};
+  const names=[],descs=[];
+  [e.helmet,e.car,e.gear].forEach(it=>{
+    const a=it.ability; if(!a) return;
+    if(a.name&&a.desc&&a.name!=='🪖 新手上路'&&a.name!=='🏎️ 標準車'&&a.name!=='🛠️ 空欄位'){
+      names.push(a.name); descs.push(a.desc);
+    }
+    for(const k in a){
+      if(k==='name'||k==='desc') continue;
+      const v=a[k];
+      if(typeof v==='number'){
+        if(k==='comboThreshold') out[k]=out[k]!=null?Math.min(out[k],v):v;
+        else if(k==='luckyCoin'){
+          if((out.luckyCoin||0)<v){ out.luckyCoin=v; out.luckyCoinAmt=a.luckyCoinAmt||out.luckyCoinAmt||0 }
+        }
+        else if(k==='luckyCoinAmt'){/* handled together with luckyCoin */}
+        else if(k==='goldMult'||k==='bossMult') out[k]=Math.max(out[k]||1,v);
+        else out[k]=(out[k]||0)+v;
+      } else if(v===true) out[k]=true;
+    }
+  });
+  out.name=names.join(' + ')||'🏁 標準組合';
+  out.desc=descs.join('；')||'無特殊加成。';
+  return out;
+}
+function applyStartAbility(){
+  const a=currentAbility();
+  if(a.startShield) S.powerups.shield=(S.powerups.shield||0)+a.startShield;
+  if(a.startDouble) S.powerups.double=(S.powerups.double||0)+a.startDouble;
+  if(a.startSkip)   S.powerups.skip  =(S.powerups.skip  ||0)+a.startSkip;
+  if(a.startCombo)  G.combo=a.startCombo;
+  if(a.comboProtect)G.comboProtectsLeft=a.comboProtect;
+  if(a.autoShield)  G.autoShieldReady=true;
+  save();
+}
+
+/* ═══════ SVG CAR RENDERERS ═══════ */
+function carSVG(fig,size=54){
+  if(!fig||!fig.svg) return `<span class="big-fallback" style="font-size:${size}px">${fig?fig.emoji:'🏎️'}</span>`;
+  const v=fig.svg.variant;
+  if(v==='helmet')   return helmetSVG(fig.svg,size);
+  if(v==='classic')  return classicF1SVG(fig.svg,size);
+  if(v==='delorean') return deloreanSVG(fig.svg,size);
+  return modernF1SVG(fig.svg,size);
+}
+
+let _svgUid=0;
+function _defs3D(uid,body){
+  return `<defs>
+    <linearGradient id="hi-${uid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset="45%" stop-color="#fff" stop-opacity=".1"/>
+      <stop offset="100%" stop-color="#000" stop-opacity=".35"/>
+    </linearGradient>
+    <radialGradient id="tire-${uid}" cx=".35" cy=".35" r=".75">
+      <stop offset="0%" stop-color="#888"/>
+      <stop offset="40%" stop-color="#333"/>
+      <stop offset="100%" stop-color="#000"/>
+    </radialGradient>
+    <radialGradient id="rim-${uid}" cx=".4" cy=".4" r=".6">
+      <stop offset="0%" stop-color="#E0E0E0"/>
+      <stop offset="55%" stop-color="#777"/>
+      <stop offset="100%" stop-color="#222"/>
+    </radialGradient>
+    <linearGradient id="glass-${uid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5DADE2" stop-opacity=".6"/>
+      <stop offset="100%" stop-color="#1A1A1A" stop-opacity=".9"/>
+    </linearGradient>
+  </defs>`;
+}
+
+/* modernF1SVG — car now faces RIGHT natively, with 3D gradients */
+function modernF1SVG({colors:[body,acc,stripe],num,pattern},size){
+  const w=size*2.3,h=size;
+  const uid=++_svgUid;
+  // Livery overlay — coordinates match right-facing layout
+  let extras='';
+  if(pattern==='mercedes')
+    extras=`<rect x="40" y="26" width="60" height="3" fill="${acc}"/>
+            <path d="M 42 22 L 98 22 L 95 25 L 45 25 Z" fill="${acc}" opacity=".7"/>`;
+  else if(pattern==='redbull')
+    extras=`<path d="M 94 26 L 130 32 L 130 40 L 98 40 Z" fill="${acc}"/>
+            <rect x="40" y="30" width="58" height="2.5" fill="${stripe}"/>`;
+  else if(pattern==='mclaren')
+    extras=`<path d="M 104 30 L 130 32 L 130 42 L 104 42 Z" fill="${acc}" opacity=".55"/>
+            <rect x="42" y="28" width="56" height="3" fill="${acc}"/>`;
+  else if(pattern==='ferrari')
+    extras=`<rect x="42" y="27" width="56" height="2" fill="${acc}"/>
+            <rect x="42" y="31" width="56" height="1.5" fill="${stripe}" opacity=".6"/>`;
+  else if(pattern==='bmw')
+    extras=`<rect x="42" y="27" width="20" height="2" fill="#2D87C9"/>
+            <rect x="62" y="27" width="18" height="2" fill="#8B1538"/>
+            <rect x="80" y="27" width="18" height="2" fill="${acc}"/>
+            <rect x="42" y="30" width="56" height="1" fill="#000" opacity=".6"/>`;
+  else if(pattern==='apxgp')
+    extras=`<path d="M 38 26 L 100 22 L 102 32 L 38 32 Z" fill="${acc}" opacity=".85"/>`;
+  else
+    extras=`<rect x="42" y="28" width="56" height="3" fill="${stripe}"/>`;
+
+  return `<svg viewBox="0 0 140 60" width="${w}" height="${h}" class="car-svg">
+    ${_defs3D(uid,body)}
+    <!-- ground shadow -->
+    <ellipse cx="70" cy="55" rx="58" ry="3.5" fill="rgba(0,0,0,.4)"/>
+
+    <!-- REAR WING (left) -->
+    <rect x="8" y="10" width="32" height="4" fill="${acc}" stroke="#000" stroke-width=".6" rx="1"/>
+    <rect x="8" y="14" width="32" height="1.5" fill="url(#hi-${uid})"/>
+    <rect x="14" y="14" width="4" height="24" fill="${body}" stroke="#000" stroke-width=".5"/>
+    <rect x="30" y="14" width="4" height="24" fill="${body}" stroke="#000" stroke-width=".5"/>
+    <rect x="8"  y="38" width="32" height="5" fill="${body}" stroke="#000" stroke-width=".6" rx="1"/>
+    <rect x="8"  y="38" width="32" height="1.5" fill="url(#hi-${uid})"/>
+    <circle cx="24" cy="12" r="1.3" fill="#f00"/>
+
+    <!-- MAIN BODY (middle) -->
+    <path d="M 42 22 L 98 22 L 108 32 L 108 44 L 34 44 L 40 32 Z" fill="${body}" stroke="#000" stroke-width=".8"/>
+    <!-- top highlight for 3D -->
+    <path d="M 42 22 L 98 22 L 108 32 L 40 32 Z" fill="url(#hi-${uid})"/>
+    ${extras}
+    <!-- side-pod intake -->
+    <ellipse cx="76" cy="37" rx="12" ry="3.5" fill="#000" opacity=".65"/>
+    <ellipse cx="76" cy="36" rx="11" ry="2.5" fill="url(#hi-${uid})" opacity=".3"/>
+
+    <!-- COCKPIT + HALO -->
+    <path d="M 54 10 L 76 10 L 80 23 L 50 23 Z" fill="#0a0a0a" stroke="#000" stroke-width=".8"/>
+    <rect x="56" y="14" width="20" height="7" fill="url(#glass-${uid})"/>
+    <!-- Halo bar (depth) -->
+    <path d="M 50 10 Q 65 3 80 10" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 50 10 Q 65 4 80 10" fill="none" stroke="#555" stroke-width="1.2"/>
+
+    <!-- Airbox behind driver -->
+    <path d="M 48 6 L 66 10 L 66 22 L 48 22 Z" fill="${body}" stroke="#000" stroke-width=".8"/>
+    <path d="M 48 6 L 66 10 L 66 13 L 48 10 Z" fill="url(#hi-${uid})"/>
+    <!-- LEGO stud on airbox top -->
+    <circle cx="57" cy="7" r="1.8" fill="${body}" stroke="#000" stroke-width=".35"/>
+    <circle cx="56.5" cy="6.5" r="1" fill="url(#hi-${uid})"/>
+
+    <!-- NOSE CONE (right) -->
+    <path d="M 94 28 L 130 32 L 130 42 L 94 42 Z" fill="${body}" stroke="#000" stroke-width=".8"/>
+    <path d="M 94 28 L 130 32 L 130 34 L 94 31 Z" fill="url(#hi-${uid})"/>
+    <!-- LEGO stud on nose -->
+    <circle cx="113" cy="32" r="1.8" fill="${body}" stroke="#000" stroke-width=".35"/>
+    <circle cx="112.5" cy="31.5" r="1" fill="url(#hi-${uid})"/>
+
+    <!-- FRONT WING (right) -->
+    <rect x="106" y="40" width="28" height="5" fill="${acc}" stroke="#000" stroke-width=".6" rx="1"/>
+    <rect x="106" y="40" width="28" height="1.5" fill="url(#hi-${uid})"/>
+    <rect x="106" y="36" width="6" height="10" fill="${acc}" stroke="#000" stroke-width=".6"/>
+    <rect x="128" y="36" width="6" height="10" fill="${acc}" stroke="#000" stroke-width=".6"/>
+
+    <!-- REAR TIRE (left, bigger) -->
+    <circle cx="32" cy="47" r="11" fill="url(#tire-${uid})" stroke="#000" stroke-width=".5"/>
+    <circle cx="32" cy="47" r="6"  fill="url(#rim-${uid})"/>
+    <circle cx="32" cy="47" r="2.5" fill="#CFD8DC"/>
+    <!-- spokes -->
+    <line x1="32" y1="41" x2="32" y2="53" stroke="#263238" stroke-width=".5"/>
+    <line x1="26" y1="47" x2="38" y2="47" stroke="#263238" stroke-width=".5"/>
+    <line x1="28" y1="43" x2="36" y2="51" stroke="#263238" stroke-width=".4"/>
+    <line x1="28" y1="51" x2="36" y2="43" stroke="#263238" stroke-width=".4"/>
+
+    <!-- FRONT TIRE (right) -->
+    <circle cx="110" cy="47" r="10" fill="url(#tire-${uid})" stroke="#000" stroke-width=".5"/>
+    <circle cx="110" cy="47" r="5.5" fill="url(#rim-${uid})"/>
+    <circle cx="110" cy="47" r="2.2" fill="#CFD8DC"/>
+    <line x1="110" y1="42" x2="110" y2="52" stroke="#263238" stroke-width=".4"/>
+    <line x1="105" y1="47" x2="115" y2="47" stroke="#263238" stroke-width=".4"/>
+
+    <!-- side race number -->
+    ${num?`<text x="73" y="40" font-size="7" fill="${stripe==='#FFF'||stripe==='#fff'?'#000':'#FFF'}" font-weight="900" font-family="Arial Black, sans-serif">#${num}</text>`:''}
+  </svg>`;
+}
+
+/* classicF1SVG — facing RIGHT, 3D gradients, LEGO studs on top */
+function classicF1SVG({colors:[body,acc,stripe],num},size){
+  const w=size*2.3,h=size;
+  const uid=++_svgUid;
+  return `<svg viewBox="0 0 140 60" width="${w}" height="${h}" class="car-svg">
+    ${_defs3D(uid,body)}
+    <ellipse cx="70" cy="55" rx="60" ry="3.5" fill="rgba(0,0,0,.4)"/>
+
+    <!-- TALL REAR WING (left, 90s style) -->
+    <rect x="8" y="8" width="30" height="5" fill="${body}" stroke="#000" stroke-width=".6"/>
+    <rect x="8" y="8" width="30" height="2" fill="url(#hi-${uid})"/>
+    <rect x="8" y="13" width="30" height="3" fill="${acc}"/>
+    <rect x="16" y="16" width="4" height="24" fill="${body}" stroke="#000" stroke-width=".5"/>
+    <rect x="28" y="16" width="4" height="24" fill="${body}" stroke="#000" stroke-width=".5"/>
+    <rect x="8" y="38" width="30" height="4" fill="${body}" stroke="#000" stroke-width=".6"/>
+    <rect x="8" y="38" width="30" height="1.5" fill="url(#hi-${uid})"/>
+
+    <!-- MAIN BODY (boxier) -->
+    <rect x="40" y="24" width="58" height="20" fill="${body}" stroke="#000" stroke-width=".8" rx="2"/>
+    <rect x="40" y="24" width="58" height="7" fill="url(#hi-${uid})" rx="2"/>
+    <!-- racing stripe -->
+    <rect x="40" y="30" width="58" height="4" fill="${acc}"/>
+    <rect x="40" y="35" width="58" height="1.5" fill="${stripe}" opacity=".8"/>
+    <!-- LEGO studs on top of body -->
+    <circle cx="50" cy="22" r="2" fill="${body}" stroke="#000" stroke-width=".4"/>
+    <circle cx="49" cy="21" r="1.2" fill="url(#hi-${uid})"/>
+    <circle cx="88" cy="22" r="2" fill="${body}" stroke="#000" stroke-width=".4"/>
+    <circle cx="87" cy="21" r="1.2" fill="url(#hi-${uid})"/>
+
+    <!-- EXPOSED COCKPIT (classic open-top) -->
+    <ellipse cx="70" cy="24" rx="12" ry="5" fill="#111" stroke="#000" stroke-width=".8"/>
+    <ellipse cx="68" cy="23" rx="10" ry="2.5" fill="#333"/>
+    <circle cx="70" cy="20" r="4" fill="${acc}" stroke="#000" stroke-width=".5"/>
+    <circle cx="69" cy="19" r="2" fill="url(#hi-${uid})"/>
+
+    <!-- airbox behind driver -->
+    <path d="M 56 12 L 66 16 L 66 24 L 56 24 Z" fill="${body}" stroke="#000" stroke-width=".7"/>
+    <path d="M 56 12 L 66 16 L 66 18 L 56 14 Z" fill="url(#hi-${uid})"/>
+
+    <!-- POINTY NOSE (right) -->
+    <path d="M 92 30 L 130 32 L 130 40 L 92 42 Z" fill="${body}" stroke="#000" stroke-width=".8"/>
+    <path d="M 92 30 L 130 32 L 130 34 L 92 33 Z" fill="url(#hi-${uid})"/>
+
+    <!-- BIG FLAT FRONT WING (right) -->
+    <rect x="104" y="40" width="36" height="7" fill="${body}" stroke="#000" stroke-width=".7" rx="1"/>
+    <rect x="104" y="40" width="36" height="2" fill="url(#hi-${uid})"/>
+    <rect x="106" y="35" width="32" height="5" fill="${acc}" stroke="#000" stroke-width=".5"/>
+    <rect x="106" y="35" width="32" height="1.5" fill="url(#hi-${uid})"/>
+
+    <!-- HUGE CLASSIC TIRES (wider than modern) -->
+    <circle cx="32" cy="47" r="12" fill="url(#tire-${uid})" stroke="#000" stroke-width=".5"/>
+    <circle cx="32" cy="47" r="6.5" fill="url(#rim-${uid})"/>
+    <circle cx="32" cy="47" r="2.5" fill="#CFD8DC"/>
+    <line x1="32" y1="40" x2="32" y2="54" stroke="#263238" stroke-width=".5"/>
+    <line x1="25" y1="47" x2="39" y2="47" stroke="#263238" stroke-width=".5"/>
+    <line x1="27" y1="42" x2="37" y2="52" stroke="#263238" stroke-width=".4"/>
+    <line x1="27" y1="52" x2="37" y2="42" stroke="#263238" stroke-width=".4"/>
+    <circle cx="110" cy="47" r="11" fill="url(#tire-${uid})" stroke="#000" stroke-width=".5"/>
+    <circle cx="110" cy="47" r="6" fill="url(#rim-${uid})"/>
+    <circle cx="110" cy="47" r="2.3" fill="#CFD8DC"/>
+    <line x1="110" y1="41" x2="110" y2="53" stroke="#263238" stroke-width=".4"/>
+    <line x1="104" y1="47" x2="116" y2="47" stroke="#263238" stroke-width=".4"/>
+
+    <!-- big circular race number on side -->
+    <circle cx="75" cy="37" r="5.5" fill="${stripe}" stroke="#000" stroke-width=".5"/>
+    <circle cx="74" cy="36" r="3" fill="url(#hi-${uid})" opacity=".6"/>
+    ${num?`<text x="75" y="40" font-size="7" text-anchor="middle" fill="${body==='#FFF'||body==='#fff'?'#DC0000':'#000'}" font-weight="900" font-family="Arial Black, sans-serif">${num}</text>`:''}
+  </svg>`;
+}
+
+/* deloreanSVG — facing RIGHT, 3D body, LEGO studs */
+function deloreanSVG({colors:[body,dark,glow]},size){
+  const w=size*2.2,h=size;
+  const uid=++_svgUid;
+  return `<svg viewBox="0 0 140 60" width="${w}" height="${h}" class="car-svg">
+    ${_defs3D(uid,body)}
+    <ellipse cx="70" cy="55" rx="52" ry="3.5" fill="rgba(0,0,0,.4)"/>
+    <!-- FLUX CAPACITOR GLOW (LEFT = rear) -->
+    <rect x="18" y="34" width="18" height="3" fill="${glow}"/>
+    <rect x="18" y="38" width="18" height="2" fill="${glow}" opacity=".6"/>
+    <circle cx="27" cy="36" r="2.5" fill="${glow}" opacity=".85"/>
+    <circle cx="27" cy="36" r="1.2" fill="#fff" opacity=".9"/>
+    <!-- boxy 80s body, reversed for right-facing -->
+    <path d="M 16 40 L 20 30 L 38 22 L 78 22 L 110 30 L 118 40 Z" fill="${body}" stroke="#000" stroke-width="1"/>
+    <!-- top highlight (3D) -->
+    <path d="M 20 30 L 38 22 L 78 22 L 110 30 Z" fill="url(#hi-${uid})"/>
+    <!-- windshield -->
+    <path d="M 38 30 L 54 24 L 80 24 L 100 30 Z" fill="url(#glass-${uid})" stroke="#000" stroke-width=".7"/>
+    <rect x="42" y="26" width="56" height="2" fill="#fff" opacity=".35"/>
+    <!-- gullwing door lines -->
+    <line x1="46" y1="24" x2="46" y2="40" stroke="#000" stroke-width="1"/>
+    <line x1="82" y1="24" x2="82" y2="40" stroke="#000" stroke-width="1"/>
+    <!-- headlight (right = front) -->
+    <rect x="108" y="34" width="8" height="5" fill="#FFFDE7" stroke="#000" stroke-width=".4" rx="1"/>
+    <rect x="108" y="34" width="8" height="1.5" fill="#fff" opacity=".9"/>
+    <!-- panel lines (stainless steel) -->
+    <line x1="30" y1="32" x2="108" y2="32" stroke="${dark}" stroke-width=".4" opacity=".6"/>
+    <line x1="30" y1="36" x2="108" y2="36" stroke="${dark}" stroke-width=".4" opacity=".6"/>
+    <line x1="30" y1="40" x2="108" y2="40" stroke="${dark}" stroke-width=".4" opacity=".6"/>
+    <!-- LEGO studs on roof -->
+    <circle cx="52" cy="21" r="1.8" fill="${body}" stroke="#000" stroke-width=".35"/>
+    <circle cx="51.5" cy="20.5" r="1" fill="url(#hi-${uid})"/>
+    <circle cx="70" cy="21" r="1.8" fill="${body}" stroke="#000" stroke-width=".35"/>
+    <circle cx="69.5" cy="20.5" r="1" fill="url(#hi-${uid})"/>
+    <!-- 3D tires -->
+    <circle cx="36" cy="45" r="9" fill="url(#tire-${uid})" stroke="#000" stroke-width=".5"/>
+    <circle cx="36" cy="45" r="4.5" fill="url(#rim-${uid})"/>
+    <circle cx="36" cy="45" r="2" fill="#CFD8DC"/>
+    <line x1="36" y1="40" x2="36" y2="50" stroke="#263238" stroke-width=".4"/>
+    <line x1="31" y1="45" x2="41" y2="45" stroke="#263238" stroke-width=".4"/>
+    <circle cx="102" cy="45" r="9" fill="url(#tire-${uid})" stroke="#000" stroke-width=".5"/>
+    <circle cx="102" cy="45" r="4.5" fill="url(#rim-${uid})"/>
+    <circle cx="102" cy="45" r="2" fill="#CFD8DC"/>
+    <line x1="102" y1="40" x2="102" y2="50" stroke="#263238" stroke-width=".4"/>
+    <line x1="97" y1="45" x2="107" y2="45" stroke="#263238" stroke-width=".4"/>
+    <!-- OUTATIME plate (front/right) -->
+    <rect x="104" y="40" width="12" height="4" fill="#FFD700" stroke="#000" stroke-width=".4" rx=".5"/>
+    <text x="110" y="43" font-size="3" text-anchor="middle" fill="#000" font-weight="900">88</text>
+  </svg>`;
+}
+
+/* helmetSVG — front-facing, heavily 3D shaded with highlights/shadows */
+function helmetSVG({colors:[base,top,chin],num},size){
+  const w=size,h=size;
+  const uid=++_svgUid;
+  const textColor=(base==='#FFF'||base==='#FFD700'||base==='#fff')?'#000':'#FFF';
+  return `<svg viewBox="0 0 60 60" width="${w}" height="${h}" class="car-svg">
+    <defs>
+      <radialGradient id="helm-${uid}" cx=".35" cy=".25" r=".9">
+        <stop offset="0%" stop-color="#fff" stop-opacity=".75"/>
+        <stop offset="40%" stop-color="#fff" stop-opacity=".2"/>
+        <stop offset="100%" stop-color="#000" stop-opacity=".5"/>
+      </radialGradient>
+      <linearGradient id="visor-${uid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#4FC3F7" stop-opacity=".5"/>
+        <stop offset="60%" stop-color="#0a0a0a" stop-opacity=".95"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="1"/>
+      </linearGradient>
+    </defs>
+    <ellipse cx="30" cy="53" rx="20" ry="2.5" fill="rgba(0,0,0,.4)"/>
+    <!-- helmet shell -->
+    <path d="M 8 32 Q 8 8 30 8 Q 52 8 52 32 L 52 46 Q 52 50 48 50 L 12 50 Q 8 50 8 46 Z" fill="${base}" stroke="#000" stroke-width="1.2"/>
+    <!-- 3D highlight (radial gloss) -->
+    <path d="M 8 32 Q 8 8 30 8 Q 52 8 52 32 L 52 46 Q 52 50 48 50 L 12 50 Q 8 50 8 46 Z" fill="url(#helm-${uid})"/>
+    <!-- top decorative stripe -->
+    <path d="M 14 14 Q 30 6 46 14 L 44 22 Q 30 16 16 22 Z" fill="${top}"/>
+    <path d="M 14 14 Q 30 6 46 14 L 44 17 Q 30 10 16 17 Z" fill="#fff" opacity=".3"/>
+    <!-- side stripe -->
+    <path d="M 8 30 Q 30 26 52 30 L 52 34 Q 30 30 8 34 Z" fill="${top}" opacity=".85"/>
+    <!-- visor (3D glass) -->
+    <path d="M 12 28 Q 12 18 30 18 Q 48 18 48 28 L 48 37 Q 48 40 44 40 L 16 40 Q 12 40 12 37 Z" fill="url(#visor-${uid})" stroke="#000" stroke-width=".8"/>
+    <!-- visor top shine -->
+    <path d="M 14 25 Q 30 20 46 25 L 44 29 Q 30 25 16 29 Z" fill="#fff" opacity=".35"/>
+    <!-- visor lower reflection -->
+    <path d="M 16 34 Q 30 32 44 34 L 42 36 Q 30 35 18 36 Z" fill="#fff" opacity=".15"/>
+    <!-- chin / mouth area -->
+    <rect x="10" y="42" width="40" height="6" fill="${chin}" opacity=".9"/>
+    <rect x="10" y="42" width="40" height="1.5" fill="#fff" opacity=".35"/>
+    <!-- air vents -->
+    <rect x="14" y="44" width="6" height="2" fill="#000" opacity=".6"/>
+    <rect x="40" y="44" width="6" height="2" fill="#000" opacity=".6"/>
+    <!-- chin strap buckle -->
+    <rect x="27" y="47" width="6" height="2.5" fill="#333" stroke="#000" stroke-width=".3"/>
+    <!-- LEGO stud on top -->
+    <circle cx="30" cy="5" r="2.5" fill="${base}" stroke="#000" stroke-width=".4"/>
+    <circle cx="29.2" cy="4.2" r="1.4" fill="#fff" opacity=".55"/>
+    <!-- number circle -->
+    ${num?`<circle cx="44" cy="16" r="5.5" fill="${top}" stroke="#000" stroke-width=".6"/>
+           <circle cx="43" cy="15" r="3" fill="#fff" opacity=".3"/>
+           <text x="44" y="18.5" font-size="6" text-anchor="middle" fill="${textColor}" font-weight="900" font-family="Arial Black, sans-serif">${num}</text>`:''}
+  </svg>`;
+}
+
+/* ═══════ ACHIEVEMENTS ═══════ */
+const ACHS=[
+  {id:'first',icon:'🏁',title:'首次衝線',desc:'打對第一個詞',reward:10,test:s=>s.totalCorrectWords>=1},
+  {id:'combo5',icon:'🔥',title:'連續超車 5',desc:'連擊 5 次',reward:20,test:s=>s.maxCombo>=5},
+  {id:'combo10',icon:'💥',title:'連續超車 10',desc:'連擊 10 次',reward:50,test:s=>s.maxCombo>=10},
+  {id:'combo20',icon:'⚡',title:'閃電車神',desc:'連擊 20 次',reward:100,test:s=>s.maxCombo>=20},
+  {id:'level5',icon:'🏎️',title:'五場比賽',desc:'累計完成 5 場 GP',reward:30,test:s=>s.lvlsDone>=5},
+  {id:'level20',icon:'🏆',title:'賽季常客',desc:'累計完成 20 場 GP',reward:80,test:s=>s.lvlsDone>=20},
+  {id:'cycle2',icon:'🔄',title:'第二賽季',desc:'進入第二賽季',reward:50,test:s=>s.maxCycle>=2},
+  {id:'perfect',icon:'💯',title:'完美圈速',desc:'一場 GP 100% 正確',reward:40,test:s=>s.perfectLvls>=1},
+  {id:'gold',icon:'🏅',title:'金磚獵人',desc:'蒐集 3 塊金色路段',reward:60,test:s=>s.goldBricks>=3},
+  {id:'rich',icon:'💰',title:'獎金獵人',desc:'累計 300 積分',reward:100,test:s=>s.totalEarned>=300},
+  {id:'words50',icon:'📝',title:'打字王牌',desc:'累計打對 50 個詞',reward:30,test:s=>s.totalCorrectWords>=50},
+  {id:'boss',icon:'👑',title:'冠軍賽王者',desc:'通過第一場 Final',reward:80,test:s=>s.bossDone>=1},
+];
+
+/* ═══════ SAVE (localStorage) ═══════ */
+const SAVE_KEY='legoSpeed_v3';
+let S={
+  coins:0, totalEarned:0,
+  equip:{helmet:'noob',car:'practice',gear:'none'},
+  unlocked:{helmet:['noob'],car:['practice'],gear:['none']},
+  achs:[],
+  powerups:{shield:2,double:2,skip:1},
+  maxCombo:0, lvlsDone:0, maxCycle:1,
+  totalCorrectWords:0, perfectLvls:0,
+  goldBricks:0, bossDone:0,
+  soundOn:true,
+};
+function loadSave(){
+  try{
+    const d=JSON.parse(localStorage.getItem(SAVE_KEY));
+    if(d) Object.assign(S,d);
+    // Safety: ensure structure valid
+    if(!S.equip||typeof S.equip!=='object') S.equip={helmet:'noob',car:'practice',gear:'none'};
+    if(!S.unlocked||Array.isArray(S.unlocked)) S.unlocked={helmet:['noob'],car:['practice'],gear:['none']};
+    ['helmet','car','gear'].forEach(k=>{
+      if(!S.unlocked[k]) S.unlocked[k]=[];
+      const pool=k==='helmet'?HELMETS:k==='car'?CARS:GEAR;
+      const def=pool[0].id;
+      if(!S.unlocked[k].includes(def)) S.unlocked[k].push(def);
+      if(!S.unlocked[k].includes(S.equip[k])) S.equip[k]=def;
+    });
+  }catch(e){}
+}
+function save(){localStorage.setItem(SAVE_KEY,JSON.stringify(S))}
+
+/* ═══════ SOUND (Web Audio) ═══════ */
+let audioCtx=null;
+function ac(){if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); return audioCtx}
+function tone(freq,dur=.1,type='sine',vol=.15){
+  if(!S.soundOn) return;
+  try{
+    const ctx=ac();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.type=type; osc.frequency.value=freq;
+    gain.gain.value=vol;
+    gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+dur);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime+dur);
+  }catch(e){}
+}
+function engineRev(){
+  if(!S.soundOn) return;
+  try{
+    const ctx=ac();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.type='sawtooth';
+    osc.frequency.setValueAtTime(80,ctx.currentTime);
+    osc.frequency.linearRampToValueAtTime(400,ctx.currentTime+.4);
+    gain.gain.setValueAtTime(.12,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.45);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime+.5);
+  }catch(e){}
+}
+const SFX={
+  key:    ()=>tone(800+Math.random()*200,.04,'square',.06),
+  ok:     ()=>{tone(660,.08,'sine',.12);setTimeout(()=>tone(880,.1,'sine',.12),70)},
+  err:    ()=>tone(180,.15,'sawtooth',.1),
+  bonus:  ()=>{[523,659,784,1047].forEach((f,i)=>setTimeout(()=>tone(f,.1,'triangle',.14),i*60))},
+  combo:  ()=>tone(1200,.08,'triangle',.18),
+  gold:   ()=>{[523,659,784,1047,1319].forEach((f,i)=>setTimeout(()=>tone(f,.12,'triangle',.16),i*70))},
+  level:  ()=>{[523,659,784,1047,1319,1568].forEach((f,i)=>setTimeout(()=>tone(f,.15,'sine',.16),i*90))},
+  powerup:()=>{[880,1174,1568].forEach((f,i)=>setTimeout(()=>tone(f,.08,'square',.12),i*40))},
+  beep:   ()=>tone(440,.15,'square',.15),
+  go:     ()=>{engineRev(); setTimeout(()=>tone(1200,.3,'sine',.18),200)},
+};
+function toggleSound(){
+  S.soundOn=!S.soundOn;
+  document.getElementById('sound-btn').textContent=S.soundOn?'🔊':'🔇';
+  save();
+  if(S.soundOn) SFX.ok();
+}
+
+/* ═══════ GAME STATE ═══════ */
+let G={};
+function resetG(mode){
+  G={mode,cycle:1,lvlIdx:0,words:[],wIdx:0,
+     sessionStart:0,totalWords:0,totalCorrectChars:0,totalChars:0,
+     correctWords:0,errors:0,bricksFilled:0,composing:false,
+     combo:0,goldIdx:-1,shieldActive:false,doubleActive:false,
+     levelPerfect:true,lvlCoins:0,isBoss:false,
+     comboProtectsLeft:0,autoShieldReady:false,sessionCorrect:0};
+}
+
+/* ═══════ NAV ═══════ */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function startRace(mode){
+  resetG(mode);
+  showScreen('game');
+  runStartLights(()=>loadLevel());
+}
+function goHome(){
+  clearInterval(G.timer);
+  closeAllOverlays();
+  renderHome();
+  showScreen('home');
+}
+function closeOverlay(id){document.getElementById(id).classList.remove('show')}
+function closeAllOverlays(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('show'))}
+
+/* ═══════ START LIGHTS ═══════ */
+function runStartLights(cb){
+  const ov=document.getElementById('light-overlay');
+  const lights=['l1','l2','l3','l4','l5'].map(i=>document.getElementById(i));
+  lights.forEach(l=>l.classList.remove('red','green'));
+  document.getElementById('go-text').classList.remove('show');
+  ov.classList.add('show');
+
+  const litOrder=[0,1,2,3,4];
+  let idx=0;
+  const interval=setInterval(()=>{
+    if(idx<5){
+      lights[litOrder[idx]].classList.add('red');
+      SFX.beep();
+      idx++;
+    } else {
+      clearInterval(interval);
+      setTimeout(()=>{
+        lights.forEach(l=>{l.classList.remove('red');l.classList.add('green')});
+        document.getElementById('go-text').classList.add('show');
+        SFX.go();
+        setTimeout(()=>{
+          ov.classList.remove('show');
+          cb&&cb();
+        },700);
+      },700);
+    }
+  },400);
+}
+
+/* ═══════ HOME ═══════ */
+function renderHome(){
+  const e=getEquipped();
+  document.getElementById('slot-helmet').innerHTML=carSVG(e.helmet,54);
+  document.getElementById('slot-car').innerHTML=carSVG(e.car,54);
+  document.getElementById('slot-gear').innerHTML=e.gear.svg?carSVG(e.gear,54):`<span class="big-fallback">${e.gear.emoji||'—'}</span>`;
+  document.getElementById('slot-helmet-name').textContent=e.helmet.name;
+  document.getElementById('slot-car-name').textContent=e.car.name;
+  document.getElementById('slot-gear-name').textContent=e.gear.name;
+  const a=currentAbility();
+  document.getElementById('combined-ability').innerHTML=
+    `<b>🎯 ${a.name}</b><br>${a.desc}`;
+  document.getElementById('coin-count').textContent=S.coins;
+  document.getElementById('city-count').textContent=S.lvlsDone;
+  document.getElementById('sound-btn').textContent=S.soundOn?'🔊':'🔇';
+  renderTrophies();
+}
+function renderTrophies(){
+  const shelf=document.getElementById('trophy-shelf');
+  const n=Math.min(S.lvlsDone,30);
+  const items=['🏆','🥇','🥈','🥉','🏅','🎖️'];
+  shelf.innerHTML='';
+  if(n===0){
+    shelf.innerHTML='<div style="width:100%;text-align:center;color:#3E2723;font-size:.85rem;padding:20px 0">還沒拿過獎盃 — 開始比賽吧！</div>';
+    return;
+  }
+  for(let i=0;i<n;i++){
+    const t=document.createElement('span');
+    t.className='trophy';
+    t.textContent=items[i%items.length];
+    t.style.animationDelay=(i*40)+'ms';
+    shelf.appendChild(t);
+  }
+}
+
+/* ═══════ LEVEL LOAD ═══════ */
+function levels(){return BANKS[G.mode]}
+
+function loadLevel(){
+  const totalLvl=G.lvlIdx+1+(G.cycle-1)*levels().length;
+  G.isBoss=(totalLvl%5===0);
+  const lvl=levels()[G.lvlIdx];
+  let pool=[...lvl.words];
+  if(G.isBoss) pool=pool.concat(pool);
+  G.words=shuffle(pool).slice(0,G.isBoss?Math.min(10,pool.length):lvl.words.length);
+  G.wIdx=0; G.correctWords=0; G.errors=0; G.bricksFilled=0;
+  G.sessionStart=Date.now(); G.combo=0;
+  G.levelPerfect=true; G.lvlCoins=0;
+  G.comboProtectsLeft=0; G.autoShieldReady=false;
+  G.goldIdx=Math.random()<.6?Math.floor(Math.random()*G.words.length):-1;
+  applyStartAbility();
+  const a=currentAbility();
+  if(a.name) setTimeout(()=>toast('🎯 '+a.name+'：'+a.desc),450);
+
+  document.getElementById('lvl-num').textContent=totalLvl;
+  document.getElementById('cycle-num').textContent=G.cycle;
+  document.getElementById('boss-badge').style.display=G.isBoss?'inline-flex':'none';
+  document.getElementById('fig').innerHTML=carSVG(getEquipped().car,60);
+
+  renderPowerups();
+  buildBricks();
+  updateCombo(0);
+
+  document.getElementById('wpm').textContent='0';
+  document.getElementById('acc').textContent='100';
+  document.getElementById('sec').textContent='0';
+  clearInterval(G.timer);
+  G.timer=setInterval(tickTimer,1000);
+
+  loadWord();
+}
+
+function buildBricks(){
+  const row=document.getElementById('bricks-row');
+  row.innerHTML='';
+  G.words.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='brick';
+    if(i===G.goldIdx) d.dataset.gold='1';
+    row.appendChild(d);
+  });
+  updateProgressText();
+}
+function updateProgressText(){
+  document.getElementById('progress-text').textContent=`LAP ${G.wIdx} / ${G.words.length}`;
+}
+
+function loadWord(){
+  G.current=G.words[G.wIdx];
+  G.wordStart=Date.now();
+  renderTarget(G.current,'');
+  const inp=document.getElementById('inp');
+  inp.value=''; inp.className='typing-input'+(G.shieldActive?' shield':'');
+  inp.focus();
+  clearFeedback();
+  document.getElementById('hint').textContent =
+    G.mode==='zh' ? '💡 中文請用注音/倉頡/拼音輸入法' : 'Type the text above ⬆️';
+  updateProgressText();
+}
+
+function renderTarget(word,typed){
+  const el=document.getElementById('target');
+  el.innerHTML='';
+  const w=[...word], t=[...typed];
+  w.forEach((c,i)=>{
+    const s=document.createElement('span');
+    s.className='ch'; s.textContent=c;
+    if(i<t.length) s.classList.add(t[i]===c?'ok':'bad');
+    else if(i===t.length) s.classList.add('cur');
+    el.appendChild(s);
+  });
+}
+
+/* ═══════ INPUT ═══════ */
+const inp=document.getElementById('inp');
+inp.addEventListener('compositionstart',()=>G.composing=true);
+inp.addEventListener('compositionend',()=>{G.composing=false; checkInput(inp.value)});
+inp.addEventListener('input',()=>{if(G.composing) return; SFX.key(); checkInput(inp.value)});
+inp.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!G.composing){
+    if(inp.value===G.current) handleOK();
+    else if(inp.value.length>0) handleErr();
+  }
+});
+function checkInput(typed){
+  renderTarget(G.current,typed);
+  if(typed===G.current) handleOK();
+  else if(typed.length>G.current.length) handleErr();
+}
+
+/* ═══════ CORRECT ═══════ */
+const OK_MSGS=['🏁 衝線！','💨 Perfect!','🔥 太快了！','⚡ 超車成功！','🏆 Pole!','🥇 頂尖圈速！','💪 Nice!'];
+const ERR_MSGS=['再試一次！','Try again!','油門踩下去！','Almost!','集中精神！'];
+const BR_COLS=['br-red','br-black','br-yellow','br-silver'];
+
+function handleOK(){
+  inp.className='typing-input success';
+  const chars=[...G.current].length;
+  G.totalWords++;
+  G.correctWords++;
+  G.totalCorrectChars+=chars;
+  G.totalChars+=chars;
+  S.totalCorrectWords++;
+  G.combo++;
+  if(G.combo>S.maxCombo) S.maxCombo=G.combo;
+  updateCombo(G.combo);
+
+  const isGold=G.allGold||G.wIdx===G.goldIdx;
+  fillBrick(G.wIdx,isGold);
+
+  const abl=currentAbility();
+  let coins=chars+Math.floor(G.combo/3)*2;
+  if(isGold){
+    const mult=5*(abl.goldMult||1);
+    coins*=mult; S.goldBricks++; SFX.gold();
+    if(abl.goldMult>1) toast('🎬 '+abl.name+' 觸發！金磚 x'+mult);
+  } else SFX.ok();
+  if(abl.coinBoost) coins=Math.floor(coins*(1+abl.coinBoost));
+  if(abl.luckyCoin&&Math.random()<abl.luckyCoin){
+    coins+=abl.luckyCoinAmt;
+    floatBubble('⚡+'+abl.luckyCoinAmt);
+  }
+  G.sessionCorrect=(G.sessionCorrect||0)+1;
+  if(abl.every7Bonus&&G.sessionCorrect%7===0){
+    coins+=abl.every7Bonus;
+    toast('🏆 七冠王啟動！+'+abl.every7Bonus+' 金幣');
+  }
+  if(G.doubleActive){coins*=2; G.doubleActive=false}
+  if(G.isBoss) coins=Math.floor(coins*1.5);
+  addCoins(coins); G.lvlCoins+=coins;
+
+  animateFig(G.combo>=5?'fig-jump':'fig-happy');
+  showFeedback(
+    isGold?`🏅 金路段！+${coins} 🏁`:rnd(OK_MSGS)+` +${coins}🏁`,
+    isGold?'fb-bonus':'fb-ok'
+  );
+  spawnSprintBurst(isGold);
+  spawnParticles(isGold?'🏁':'💨',isGold?14:6);
+  floatBubble('+'+coins+'🏁');
+  updateStats();
+  checkAchievements();
+
+  setTimeout(()=>{
+    G.wIdx++;
+    updateProgressText();
+    if(G.wIdx>=G.words.length) levelDone();
+    else loadWord();
+  },550);
+}
+
+function handleErr(){
+  if(G.shieldActive){
+    G.shieldActive=false;
+    inp.className='typing-input';
+    inp.value=''; renderTarget(G.current,'');
+    SFX.powerup();
+    showFeedback('⚠️ 黃旗！擋下失誤','fb-bonus');
+    return;
+  }
+  if(G.autoShieldReady){
+    G.autoShieldReady=false;
+    inp.className='typing-input';
+    inp.value=''; renderTarget(G.current,'');
+    SFX.powerup();
+    showFeedback('⏰ 時光倒流！失誤還原','fb-bonus');
+    toast('⏰ DeLorean 能力觸發！');
+    return;
+  }
+  G.errors++; G.totalChars++;
+  if(G.comboProtectsLeft>0&&G.combo>=3){
+    G.comboProtectsLeft--;
+    toast('🔧 主動懸吊保住連擊 x'+G.combo+'！');
+    SFX.powerup();
+    animateFig('fig-shake');
+    showFeedback('🔧 連擊保護！','fb-bonus');
+    updateStats();
+    return;
+  }
+  G.combo=0; updateCombo(0);
+  G.levelPerfect=false;
+  SFX.err();
+  animateFig('fig-shake');
+  showFeedback(rnd(ERR_MSGS),'fb-err');
+  updateStats();
+}
+
+function fillBrick(i,gold){
+  const bricks=document.querySelectorAll('.brick');
+  if(!bricks[i]) return;
+  if(gold) bricks[i].classList.add('br-gold','pop');
+  else bricks[i].classList.add(BR_COLS[G.bricksFilled%BR_COLS.length],'pop');
+  G.bricksFilled++;
+}
+
+/* ═══════ COMBO ═══════ */
+function updateCombo(n){
+  const disp=document.getElementById('combo-disp');
+  document.getElementById('combo-n').textContent=n;
+  const thr=currentAbility().comboThreshold||3;
+  if(n>=thr){
+    disp.classList.add('show');
+    disp.classList.toggle('mega',n>=10);
+    if(n>=5 && n%5===0) SFX.combo();
+  } else {
+    disp.classList.remove('show','mega');
+  }
+}
+
+/* ═══════ COINS ═══════ */
+function addCoins(n){
+  S.coins+=n; S.totalEarned+=n;
+  document.getElementById('coin-count').textContent=S.coins;
+  save();
+}
+
+/* ═══════ STATS ═══════ */
+function tickTimer(){
+  document.getElementById('sec').textContent=Math.round((Date.now()-G.sessionStart)/1000);
+  updateStats();
+}
+function updateStats(){
+  const mins=(Date.now()-G.sessionStart)/60000;
+  const wpm=mins>.01?Math.round(G.totalWords/mins):0;
+  const acc=G.totalChars>0?Math.round(G.totalCorrectChars/G.totalChars*100):100;
+  document.getElementById('wpm').textContent=Math.min(wpm,999);
+  document.getElementById('acc').textContent=acc;
+}
+
+/* ═══════ POWERUPS ═══════ */
+function renderPowerups(){
+  ['shield','double','skip'].forEach(k=>{
+    document.getElementById('cnt-'+k).textContent=S.powerups[k]||0;
+    const el=document.getElementById('pu-'+k);
+    el.classList.toggle('active',(S.powerups[k]||0)>0);
+    el.classList.toggle('used',(S.powerups[k]||0)<=0);
+  });
+}
+function usePowerup(type){
+  if((S.powerups[type]||0)<=0) return;
+  S.powerups[type]--;
+  SFX.powerup();
+  if(type==='shield'){
+    G.shieldActive=true;
+    inp.className='typing-input shield';
+    toast('⚠️ 黃旗安全車啟動！下次打錯不算');
+  } else if(type==='double'){
+    G.doubleActive=true;
+    toast('🏁 DRS 加速！下一詞積分 x2');
+  } else if(type==='skip'){
+    toast('🚁 進站 Pit Stop！跳過此題');
+    fillBrick(G.wIdx,false);
+    G.wIdx++; updateProgressText();
+    setTimeout(()=>{
+      if(G.wIdx>=G.words.length) levelDone();
+      else loadWord();
+    },300);
+  }
+  renderPowerups();
+  save();
+}
+
+/* ═══════ LEVEL DONE ═══════ */
+function levelDone(){
+  clearInterval(G.timer);
+  const el=Math.round((Date.now()-G.sessionStart)/1000);
+  const acc=G.totalChars>0?Math.round(G.totalCorrectChars/G.totalChars*100):100;
+  S.lvlsDone++;
+  if(G.cycle>S.maxCycle) S.maxCycle=G.cycle;
+  if(G.levelPerfect) S.perfectLvls++;
+  if(G.isBoss) S.bossDone++;
+
+  let stars='🥉',place='第 3 名',placeHighlight=3;
+  if(acc>=95&&el<90){stars='🥇🥇🥇';place='P1 冠軍！';placeHighlight=1}
+  else if(acc>=80){stars='🥈🥈';place='P2 亞軍';placeHighlight=2}
+
+  const abl=currentAbility();
+  let bonus=20;
+  if(placeHighlight===1) bonus=60;
+  else if(placeHighlight===2) bonus=35;
+  if(G.isBoss) bonus*=2;
+  if(G.isBoss&&abl.bossMult) bonus*=abl.bossMult;
+  if(G.levelPerfect&&abl.perfectBonus) bonus+=abl.perfectBonus;
+  const starCount=(stars.match(/🥇|🥈|🥉/g)||[]).length;
+  if(abl.starBonus) bonus+=starCount*abl.starBonus;
+  addCoins(bonus);
+
+  const rew=rewardPowerup(placeHighlight);
+
+  SFX.level();
+  const isLast=G.lvlIdx>=levels().length-1;
+  document.getElementById('cmp-icon').textContent=G.isBoss?'👑':(placeHighlight===1?'🏆':(isLast?'🎉':'🏁'));
+  document.getElementById('cmp-title').textContent=
+    G.isBoss?'CHAMPIONSHIP FINAL 過關！':
+    isLast?`第 ${G.cycle} 賽季完成！`:place;
+  document.getElementById('cmp-stars').textContent=stars;
+
+  // Podium highlight
+  document.querySelectorAll('.podium-step').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.podium-'+placeHighlight).classList.add('active');
+
+  document.getElementById('cmp-score').innerHTML=`
+    <div><span>✅ 圈速正確率</span><strong>${acc}%</strong></div>
+    <div><span>⏱ 完賽時間</span><strong>${el}s</strong></div>
+    <div><span>🏁 完成圈數</span><strong>${G.correctWords}/${G.words.length}</strong></div>
+    <div><span>🔥 最高連擊</span><strong>x${G.combo}</strong></div>
+    <div><span>🏁 本場積分</span><strong>${G.lvlCoins}</strong></div>
+    <div><span>🎁 完賽獎勵</span><strong>+${bonus} 🏁${rew?' +'+rew:''}</strong></div>
+  `;
+  document.getElementById('overlay-lvl').classList.add('show');
+  spawnConfetti();
+  save();
+  checkAchievements();
+}
+
+function rewardPowerup(place){
+  if(Math.random()>.5) return null;
+  const pool=place===1?['shield','double','skip']:['shield','double'];
+  const p=pool[Math.floor(Math.random()*pool.length)];
+  S.powerups[p]=(S.powerups[p]||0)+1;
+  const emoji={shield:'⚠️',double:'🏁',skip:'🚁'}[p];
+  return emoji;
+}
+
+function nextLevel(){
+  closeOverlay('overlay-lvl');
+  clearConfetti();
+  G.lvlIdx++;
+  if(G.lvlIdx>=levels().length){G.lvlIdx=0; G.cycle++}
+  runStartLights(()=>loadLevel());
+}
+function replayLevel(){closeOverlay('overlay-lvl'); clearConfetti(); runStartLights(()=>loadLevel())}
+function skipWord(){
+  G.wIdx++; updateProgressText();
+  if(G.wIdx>=G.words.length) levelDone();
+  else loadWord();
+}
+
+/* ═══════ SHOP ═══════ */
+let shopCat='helmet';
+function switchTab(cat){ shopCat=cat; renderShop(); }
+function openShop(cat){
+  if(cat) shopCat=cat;
+  document.getElementById('overlay-shop').classList.add('show');
+  renderShop();
+}
+function renderShop(){
+  document.getElementById('shop-coins').textContent=S.coins;
+  document.querySelectorAll('.shop-tab').forEach(t=>
+    t.classList.toggle('active',t.dataset.cat===shopCat));
+  const pool=shopCat==='helmet'?HELMETS:shopCat==='car'?CARS:GEAR;
+  const unlocked=S.unlocked[shopCat]||[];
+  const selected=S.equip[shopCat];
+  const grid=document.getElementById('shop-grid');
+  grid.innerHTML='';
+  pool.forEach(f=>{
+    const unl=unlocked.includes(f.id);
+    const sel=selected===f.id;
+    const d=document.createElement('div');
+    const isTeam=!!f.team;
+    d.className='shop-item'+(unl?'':' locked')+(sel?' selected':'')+(isTeam?' team':'');
+    if(isTeam){
+      d.style.setProperty('--t',f.team);
+      d.style.setProperty('--tt',f.teamText||'#fff');
+      d.style.borderColor=f.team;
+    }
+    const hasSvg=!!f.svg;
+    const ab=f.ability;
+    d.innerHTML=`${isTeam?'<div class="team-banner"></div>':''}
+      ${hasSvg?carSVG(f,50):`<span class="emoji" style="font-size:2.4rem">${f.emoji||'—'}</span>`}
+      <div class="name">${f.name}</div>
+      ${isTeam?`<div class="team-label">${f.label}</div>`:''}
+      ${ab?`<div class="ability-title">${ab.name}</div>
+            <div class="ability-desc">${ab.desc}</div>`:''}
+      <div class="price">${unl?(sel?'✅ 裝備中':'點擊裝備'):'🏁 '+f.price}</div>`;
+    d.onclick=()=>buyOrSelect(f);
+    grid.appendChild(d);
+  });
+}
+function buyOrSelect(f){
+  const cat=shopCat;
+  if(S.unlocked[cat].includes(f.id)){
+    S.equip[cat]=f.id;
+    SFX.powerup();
+    toast('✅ 裝備 '+f.name);
+    save(); renderShop(); renderHome();
+    return;
+  }
+  if(S.coins<f.price){toast('🏁 積分不足（需要 '+f.price+'）'); SFX.err(); return}
+  S.coins-=f.price;
+  S.unlocked[cat].push(f.id);
+  S.equip[cat]=f.id;
+  SFX.bonus();
+  toast('🎉 入手 '+f.name+'！');
+  document.getElementById('coin-count').textContent=S.coins;
+  save(); renderShop(); renderHome();
+}
+
+/* ═══════ ACHIEVEMENTS ═══════ */
+function openAch(){
+  const list=document.getElementById('ach-list');
+  list.innerHTML='';
+  ACHS.forEach(a=>{
+    const got=S.achs.includes(a.id);
+    const d=document.createElement('div');
+    d.className='ach-item'+(got?' unlocked':'');
+    d.innerHTML=`<span class="a-icon">${a.icon}</span>
+      <div class="a-info">
+        <div class="a-title">${a.title} ${got?'✅':''}</div>
+        <div class="a-desc">${a.desc} · 🏁 ${a.reward}</div>
+      </div>`;
+    list.appendChild(d);
+  });
+  document.getElementById('overlay-ach').classList.add('show');
+}
+function checkAchievements(){
+  ACHS.forEach(a=>{
+    if(S.achs.includes(a.id)) return;
+    if(a.test(S)){
+      S.achs.push(a.id);
+      addCoins(a.reward);
+      SFX.bonus();
+      toast(`🏆 成就解鎖：${a.title}  +${a.reward}🏁`);
+    }
+  });
+  save();
+}
+
+/* ═══════ TOAST / FEEDBACK / FIG ═══════ */
+let toastT;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove('show'),2400);
+}
+function showFeedback(msg,cls){
+  const el=document.getElementById('fb');
+  el.textContent=msg; el.className='fb-msg '+cls;
+  void el.offsetWidth; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),1100);
+}
+function clearFeedback(){document.getElementById('fb').classList.remove('show')}
+function animateFig(cls){
+  const el=document.getElementById('fig');
+  el.classList.remove('fig-happy','fig-shake','fig-jump');
+  void el.offsetWidth;
+  el.classList.add(cls);
+}
+function floatBubble(text){
+  const target=document.getElementById('target');
+  const b=document.createElement('div');
+  b.className='float-bubble'; b.textContent=text;
+  b.style.left=(40+Math.random()*20)+'%';
+  b.style.top='10%'; b.style.color='var(--red)';
+  target.appendChild(b);
+  setTimeout(()=>b.remove(),1200);
+}
+function spawnSprintBurst(isGold){
+  const target=document.getElementById('target');
+  if(!target) return;
+  // Horizontal speed line
+  const line=document.createElement('div');
+  line.className='sprint-line';
+  if(isGold) line.style.background='linear-gradient(to right,transparent,#FFD700,#FFF,#FFD700,transparent)';
+  target.appendChild(line);
+  // Ghost F1 car zooming across
+  const car=document.createElement('div');
+  car.className='sprint-car';
+  const chosen=CARS.find(c=>c.id===S.equip.car)||CARS[1]||CARS[0];
+  car.innerHTML=carSVG(chosen,46);
+  target.appendChild(car);
+  // Background flash
+  const flash=document.createElement('div');
+  flash.className='sprint-flash';
+  target.appendChild(flash);
+  // Radiating speed streaks (6 directions)
+  for(let i=0;i<6;i++){
+    const s=document.createElement('div');
+    s.className='sprint-streak';
+    const ang=i*60;
+    const dist=100+Math.random()*50;
+    s.style.setProperty('--sw',dist+'px');
+    s.style.setProperty('--sl',(50-dist/target.offsetWidth*50)+'%');
+    s.style.transform=`translateY(-50%) rotate(${ang}deg)`;
+    s.style.transformOrigin='left center';
+    target.appendChild(s);
+  }
+  setTimeout(()=>{
+    line.remove(); car.remove(); flash.remove();
+    target.querySelectorAll('.sprint-streak').forEach(e=>e.remove());
+  },600);
+}
+
+function spawnParticles(emoji,n){
+  const target=document.getElementById('target');
+  for(let i=0;i<n;i++){
+    const p=document.createElement('div');
+    p.className='particle'; p.textContent=emoji;
+    p.style.left='50%'; p.style.top='50%';
+    const ang=(i/n)*Math.PI*2+Math.random()*.5;
+    const dist=60+Math.random()*50;
+    p.style.setProperty('--tx',Math.cos(ang)*dist+'px');
+    p.style.setProperty('--ty',Math.sin(ang)*dist+'px');
+    target.appendChild(p);
+    setTimeout(()=>p.remove(),900);
+  }
+}
+
+/* ═══════ CONFETTI ═══════ */
+const CONF=['#DC0000','#FFD700','#FFFFFF','#000000','#C0C0C0','#F57C00'];
+function spawnConfetti(){
+  const w=document.getElementById('confetti');
+  for(let i=0;i<60;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');
+      p.className='c-piece';
+      p.style.left=Math.random()*100+'vw';
+      p.style.background=CONF[Math.floor(Math.random()*CONF.length)];
+      p.style.transform=`rotate(${Math.random()*360}deg)`;
+      p.style.animationDuration=(1.4+Math.random()*2)+'s';
+      p.style.animationDelay=(Math.random()*.4)+'s';
+      p.style.borderRadius=Math.random()>.5?'50%':'2px';
+      w.appendChild(p);
+      setTimeout(()=>p.remove(),3600);
+    },i*34);
+  }
+}
+function clearConfetti(){document.getElementById('confetti').innerHTML=''}
+
+/* ═══════ UTILS ═══════ */
+function shuffle(a){return a.sort(()=>Math.random()-.5)}
+function rnd(a){return a[Math.floor(Math.random()*a.length)]}
+
+/* ═══════ GM (Developer) MODE ═══════ */
+/* Activation: press G then M within 1 second (anywhere), OR persisted in localStorage */
+let gmBuf='';
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  const k=e.key.toLowerCase();
+  if('gm'.includes(k)){
+    gmBuf+=k;
+    if(gmBuf.endsWith('gm')){ toggleGM(true); gmBuf=''; }
+    if(gmBuf.length>6) gmBuf=gmBuf.slice(-6);
+  } else gmBuf='';
+});
+
+function toggleGM(on){
+  S.gm=on;
+  document.getElementById('gm-badge').classList.toggle('show',!!on);
+  if(on){
+    toast('🎮 GM 模式啟動！點上方紫色條開測試面板');
+    SFX.bonus();
+  } else {
+    toast('🎮 GM 模式關閉');
+  }
+  save();
+}
+function openGM(){
+  renderAbilityShowcase();
+  document.getElementById('gm-fast-state').textContent=S.gmFast?'ON':'OFF';
+  document.getElementById('gm-intro-state').textContent=S.gmSkipIntro?'ON':'OFF';
+  document.getElementById('overlay-gm').classList.add('show');
+}
+function gmExit(){ toggleGM(false); closeOverlay('overlay-gm'); }
+function gmAddCoins(){ addCoins(9999); toast('💰 +9999 金幣'); }
+function gmUnlockAll(){
+  [['helmet',HELMETS],['car',CARS],['gear',GEAR]].forEach(([cat,pool])=>{
+    pool.forEach(f=>{ if(!S.unlocked[cat].includes(f.id)) S.unlocked[cat].push(f.id); });
+  });
+  save(); toast('🔓 全部項目已解鎖'); SFX.bonus();
+}
+function gmMaxPower(){
+  S.powerups={shield:9,double:9,skip:9};
+  save(); renderPowerups(); toast('⚡ 道具已補滿');
+}
+function gmAllAchs(){
+  ACHS.forEach(a=>{ if(!S.achs.includes(a.id)){ S.achs.push(a.id); addCoins(a.reward); } });
+  save(); toast('🏆 全成就已解鎖'); SFX.bonus();
+}
+function gmForceBoss(){ S.gmForceBoss=true; save(); toast('👑 下關將是 BOSS 關'); }
+function gmGoldEverywhere(){ S.gmAllGold=true; save(); toast('🏅 下關每格都是金磚'); }
+function gmSetCombo(){
+  if(!G||!G.timer){ toast('⚠️ 需要先進入關卡'); return; }
+  G.combo=20; updateCombo(20); toast('🔥 連擊 x20');
+}
+function gmLvlJump(){
+  if(!G||!G.timer){ toast('⚠️ 需要先進入關卡'); return; }
+  G.wIdx=G.words.length; levelDone();
+}
+function gmToggleFast(){
+  S.gmFast=!S.gmFast; save();
+  document.getElementById('gm-fast-state').textContent=S.gmFast?'ON':'OFF';
+  toast('🚀 極速模式 '+(S.gmFast?'開啟':'關閉'));
+}
+function gmSkipIntro(){
+  S.gmSkipIntro=!S.gmSkipIntro; save();
+  document.getElementById('gm-intro-state').textContent=S.gmSkipIntro?'ON':'OFF';
+  toast('🏁 跳過起跑燈 '+(S.gmSkipIntro?'開啟':'關閉'));
+}
+function gmReset(){
+  if(!confirm('確定清除所有進度？')) return;
+  localStorage.removeItem(SAVE_KEY);
+  location.reload();
+}
+function renderAbilityShowcase(){
+  const list=document.getElementById('ability-showcase');
+  list.innerHTML='';
+  const cats=[['helmet','🪖 安全帽',HELMETS],['car','🏎️ 賽車',CARS],['gear','🛠️ 道具',GEAR]];
+  cats.forEach(([cat,title,pool])=>{
+    const h=document.createElement('div');
+    h.style.cssText='padding:6px 8px;background:#E8EAF6;font-weight:bold;font-size:.78rem';
+    h.textContent=title;
+    list.appendChild(h);
+    pool.filter(f=>f.ability).forEach(f=>{
+      const ab=f.ability;
+      const row=document.createElement('div');
+      row.className='ability-row';
+      const active=S.equip[cat]===f.id?' · ✅':'';
+      row.innerHTML=`
+        <div style="width:32px;text-align:center;font-size:1.2rem">${f.svg?'🏎️':(f.emoji||'—')}</div>
+        <div class="ab-name">${f.name}${active}<br><small style="color:#C62828;font-weight:900">${ab.name}</small></div>
+        <div class="ab-mini-desc">${ab.desc}</div>
+        <button onclick="gmUseItem('${cat}','${f.id}')">試用</button>`;
+      list.appendChild(row);
+    });
+  });
+}
+function gmUseItem(cat,id){
+  if(!S.unlocked[cat].includes(id)) S.unlocked[cat].push(id);
+  S.equip[cat]=id;
+  save();
+  const pool=cat==='helmet'?HELMETS:cat==='car'?CARS:GEAR;
+  toast('✅ 裝備 '+pool.find(f=>f.id===id).name);
+  renderHome();
+  renderAbilityShowcase();
+  SFX.powerup();
+}
+
+/* Intercept level-load for GM forced states */
+const _loadLevel=loadLevel;
+loadLevel=function(){
+  _loadLevel();
+  if(S.gmForceBoss){
+    G.isBoss=true;
+    document.getElementById('boss-badge').style.display='inline-flex';
+    S.gmForceBoss=false; save();
+  }
+  if(S.gmAllGold){
+    G.allGold=true;
+    S.gmAllGold=false; save();
+  }
+};
+
+/* GM fast mode: bypass start lights */
+const _runStart=runStartLights;
+runStartLights=function(cb){
+  if(S.gm&&S.gmSkipIntro){ cb&&cb(); return; }
+  _runStart(cb);
+};
+
+/* ═══════ POPULATE ROAD WITH REAL F1 CARS ═══════ */
+function populateRoadCars(){
+  const road=document.getElementById('road-cars');
+  if(!road) return;
+  // Pick 5 distinct F1 cars with different liveries for visual variety
+  const lineup=[
+    {id:'ferrari',  dur:5.5, delay:0,    bottom:14, scale:1.0},
+    {id:'mclaren',  dur:7,   delay:-2.5, bottom:10, scale:.9},
+    {id:'redbull',  dur:6,   delay:-4,   bottom:16, scale:1.0},
+    {id:'mercedes', dur:8,   delay:-1.5, bottom:12, scale:.95},
+    {id:'bmw',      dur:9,   delay:-5.5, bottom:14, scale:.9},
+    {id:'apxgp',    dur:6.5, delay:-3,   bottom:18, scale:1.0},
+  ];
+  road.innerHTML='';
+  lineup.forEach(cfg=>{
+    const car=CARS.find(c=>c.id===cfg.id); if(!car) return;
+    const v=document.createElement('div');
+    v.className='vehicle';
+    v.style.animationDuration=cfg.dur+'s';
+    v.style.animationDelay=cfg.delay+'s';
+    v.style.bottom=cfg.bottom+'px';
+    v.style.transform=`scale(${cfg.scale})`;
+    v.innerHTML=carSVG(car,44);
+    road.appendChild(v);
+  });
+}
+
+/* ═══════ INIT ═══════ */
+loadSave();
+if(S.gm) document.getElementById('gm-badge').classList.add('show');
+renderHome();
+populateRoadCars();
+checkAchievements();
+</script>
+</body>
+</html>
